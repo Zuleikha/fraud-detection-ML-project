@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(git add *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash(git -C /d/fraud-detection-ml add docs/00_project_overview.md)",
+      "Bash(git -C /d/fraud-detection-ml commit -m \"update roadmap - 5 day fraud detection interview prep plan\")",
+      "Bash(git -C /d/fraud-detection-ml add .)",
+      "Bash(git -C /d/fraud-detection-ml commit -m \"remove duplicate scaffold notebooks\")"
     ]
   }
 }
