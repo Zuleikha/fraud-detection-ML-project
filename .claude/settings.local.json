@@ -6,7 +6,10 @@
       "Bash(git -C /d/fraud-detection-ml add docs/00_project_overview.md)",
       "Bash(git -C /d/fraud-detection-ml commit -m \"update roadmap - 5 day fraud detection interview prep plan\")",
       "Bash(git -C /d/fraud-detection-ml add .)",
-      "Bash(git -C /d/fraud-detection-ml commit -m \"remove duplicate scaffold notebooks\")"
+      "Bash(git -C /d/fraud-detection-ml commit -m \"remove duplicate scaffold notebooks\")",
+      "Bash(git -C /d/fraud-detection-ml add notebooks/05_shap_explainability.ipynb)",
+      "Bash(git -C /d/fraud-detection-ml commit -m \"add missing notebook 05 shap\")",
+      "Bash(git -C /d/fraud-detection-ml commit -m \"fix directory structure - outputs/ and mlflow_experiments/ in correct locations\")"
     ]
   }
 }

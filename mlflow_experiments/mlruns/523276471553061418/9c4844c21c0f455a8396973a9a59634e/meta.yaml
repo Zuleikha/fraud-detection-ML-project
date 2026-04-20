@@ -1,0 +1,14 @@
+artifact_uri: file:///D:/fraud-detection-ml/notebooks/mlruns/523276471553061418/9c4844c21c0f455a8396973a9a59634e/artifacts
+end_time: 1776685904923
+entry_point_name: ''
+experiment_id: '523276471553061418'
+lifecycle_stage: active
+run_id: 9c4844c21c0f455a8396973a9a59634e
+run_name: serious-duck-924
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1776685904783
+status: 3
+tags: []
+user_id: zk

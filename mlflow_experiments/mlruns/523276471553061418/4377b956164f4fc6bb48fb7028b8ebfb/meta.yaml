@@ -1,0 +1,14 @@
+artifact_uri: file:///D:/fraud-detection-ml/notebooks/mlruns/523276471553061418/4377b956164f4fc6bb48fb7028b8ebfb/artifacts
+end_time: 1776686159352
+entry_point_name: ''
+experiment_id: '523276471553061418'
+lifecycle_stage: active
+run_id: 4377b956164f4fc6bb48fb7028b8ebfb
+run_name: optuna-parent
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1776685626091
+status: 3
+tags: []
+user_id: zk

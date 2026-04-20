@@ -1,0 +1,14 @@
+artifact_uri: file:///D:/fraud-detection-ml/notebooks/mlruns/523276471553061418/e3cc3df9a86f443e924fc8019fb59744/artifacts
+end_time: 1776685996043
+entry_point_name: ''
+experiment_id: '523276471553061418'
+lifecycle_stage: active
+run_id: e3cc3df9a86f443e924fc8019fb59744
+run_name: amazing-shrew-555
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1776685995893
+status: 3
+tags: []
+user_id: zk

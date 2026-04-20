@@ -1,0 +1,14 @@
+artifact_uri: file:///D:/fraud-detection-ml/notebooks/mlruns/523276471553061418/b58e7a2fb91748e7926e49361672cbd4/artifacts
+end_time: 1776685737238
+entry_point_name: ''
+experiment_id: '523276471553061418'
+lifecycle_stage: active
+run_id: b58e7a2fb91748e7926e49361672cbd4
+run_name: intelligent-robin-67
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1776685737092
+status: 3
+tags: []
+user_id: zk

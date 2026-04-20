@@ -1,0 +1,14 @@
+artifact_uri: file:///D:/fraud-detection-ml/notebooks/mlruns/523276471553061418/71df20eb6ec146beb62e60edf17022b1/artifacts
+end_time: 1776686018411
+entry_point_name: ''
+experiment_id: '523276471553061418'
+lifecycle_stage: active
+run_id: 71df20eb6ec146beb62e60edf17022b1
+run_name: languid-flea-783
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1776686018266
+status: 3
+tags: []
+user_id: zk

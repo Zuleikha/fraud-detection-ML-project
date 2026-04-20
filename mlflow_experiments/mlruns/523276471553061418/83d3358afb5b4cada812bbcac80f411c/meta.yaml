@@ -1,0 +1,14 @@
+artifact_uri: file:///D:/fraud-detection-ml/notebooks/mlruns/523276471553061418/83d3358afb5b4cada812bbcac80f411c/artifacts
+end_time: 1776685773265
+entry_point_name: ''
+experiment_id: '523276471553061418'
+lifecycle_stage: active
+run_id: 83d3358afb5b4cada812bbcac80f411c
+run_name: inquisitive-croc-170
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1776685773118
+status: 3
+tags: []
+user_id: zk

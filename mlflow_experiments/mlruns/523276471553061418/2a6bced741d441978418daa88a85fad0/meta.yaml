@@ -1,0 +1,14 @@
+artifact_uri: file:///D:/fraud-detection-ml/notebooks/mlruns/523276471553061418/2a6bced741d441978418daa88a85fad0/artifacts
+end_time: 1776685976219
+entry_point_name: ''
+experiment_id: '523276471553061418'
+lifecycle_stage: active
+run_id: 2a6bced741d441978418daa88a85fad0
+run_name: casual-mare-446
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1776685976077
+status: 3
+tags: []
+user_id: zk

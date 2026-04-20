@@ -1,0 +1,14 @@
+artifact_uri: file:///D:/fraud-detection-ml/notebooks/mlruns/523276471553061418/96df5274d373452aa062bcddc21b106d/artifacts
+end_time: 1776685843093
+entry_point_name: ''
+experiment_id: '523276471553061418'
+lifecycle_stage: active
+run_id: 96df5274d373452aa062bcddc21b106d
+run_name: bouncy-kite-38
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1776685842912
+status: 3
+tags: []
+user_id: zk

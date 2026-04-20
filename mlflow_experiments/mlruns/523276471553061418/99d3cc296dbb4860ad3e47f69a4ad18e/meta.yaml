@@ -1,0 +1,14 @@
+artifact_uri: file:///D:/fraud-detection-ml/notebooks/mlruns/523276471553061418/99d3cc296dbb4860ad3e47f69a4ad18e/artifacts
+end_time: 1776686100204
+entry_point_name: ''
+experiment_id: '523276471553061418'
+lifecycle_stage: active
+run_id: 99d3cc296dbb4860ad3e47f69a4ad18e
+run_name: melodic-fish-962
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1776686100058
+status: 3
+tags: []
+user_id: zk

@@ -1,0 +1,14 @@
+artifact_uri: file:///D:/fraud-detection-ml/notebooks/mlruns/523276471553061418/90dc980fd132469ab14bd8a0e2d24965/artifacts
+end_time: 1776685689785
+entry_point_name: ''
+experiment_id: '523276471553061418'
+lifecycle_stage: active
+run_id: 90dc980fd132469ab14bd8a0e2d24965
+run_name: nebulous-lynx-394
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1776685689642
+status: 3
+tags: []
+user_id: zk

@@ -1,0 +1,14 @@
+artifact_uri: file:///D:/fraud-detection-ml/notebooks/mlruns/523276471553061418/101b8955fd3a40339456ac65f6adc428/artifacts
+end_time: 1776685664583
+entry_point_name: ''
+experiment_id: '523276471553061418'
+lifecycle_stage: active
+run_id: 101b8955fd3a40339456ac65f6adc428
+run_name: righteous-crab-331
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1776685664437
+status: 3
+tags: []
+user_id: zk

@@ -1,0 +1,14 @@
+artifact_uri: file:///D:/fraud-detection-ml/notebooks/mlruns/523276471553061418/997984763f8a43cb87b82bf716f027ea/artifacts
+end_time: 1776685757515
+entry_point_name: ''
+experiment_id: '523276471553061418'
+lifecycle_stage: active
+run_id: 997984763f8a43cb87b82bf716f027ea
+run_name: nosy-bass-498
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1776685757382
+status: 3
+tags: []
+user_id: zk

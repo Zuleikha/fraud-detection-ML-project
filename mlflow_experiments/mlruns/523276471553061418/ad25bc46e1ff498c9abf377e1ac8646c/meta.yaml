@@ -1,0 +1,14 @@
+artifact_uri: file:///D:/fraud-detection-ml/notebooks/mlruns/523276471553061418/ad25bc46e1ff498c9abf377e1ac8646c/artifacts
+end_time: 1776686137663
+entry_point_name: ''
+experiment_id: '523276471553061418'
+lifecycle_stage: active
+run_id: ad25bc46e1ff498c9abf377e1ac8646c
+run_name: melodic-cow-51
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1776686137516
+status: 3
+tags: []
+user_id: zk

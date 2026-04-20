@@ -1,0 +1,14 @@
+artifact_uri: file:///D:/fraud-detection-ml/notebooks/mlruns/523276471553061418/905c94fe77f2435a94ac6160bbe145ee/artifacts
+end_time: 1776686080445
+entry_point_name: ''
+experiment_id: '523276471553061418'
+lifecycle_stage: active
+run_id: 905c94fe77f2435a94ac6160bbe145ee
+run_name: sneaky-yak-305
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1776686080297
+status: 3
+tags: []
+user_id: zk

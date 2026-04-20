@@ -1,0 +1,14 @@
+artifact_uri: file:///D:/fraud-detection-ml/notebooks/mlruns/523276471553061418/4568bbf5994b479aaf8ce835a2c2e81c/artifacts
+end_time: 1776685704761
+entry_point_name: ''
+experiment_id: '523276471553061418'
+lifecycle_stage: active
+run_id: 4568bbf5994b479aaf8ce835a2c2e81c
+run_name: casual-shoat-350
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1776685704580
+status: 3
+tags: []
+user_id: zk

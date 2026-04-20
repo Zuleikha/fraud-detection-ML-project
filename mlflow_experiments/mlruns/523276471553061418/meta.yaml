@@ -1,0 +1,6 @@
+artifact_location: file:///D:/fraud-detection-ml/notebooks/mlruns/523276471553061418
+creation_time: 1776685625821
+experiment_id: '523276471553061418'
+last_update_time: 1776685625821
+lifecycle_stage: active
+name: fraud-xgboost-tuning

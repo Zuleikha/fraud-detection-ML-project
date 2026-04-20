@@ -1,0 +1,14 @@
+artifact_uri: file:///D:/fraud-detection-ml/notebooks/mlruns/523276471553061418/6baf3531803345c18ee161b1f17c92dc/artifacts
+end_time: 1776685633965
+entry_point_name: ''
+experiment_id: '523276471553061418'
+lifecycle_stage: active
+run_id: 6baf3531803345c18ee161b1f17c92dc
+run_name: orderly-asp-51
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1776685633796
+status: 3
+tags: []
+user_id: zk

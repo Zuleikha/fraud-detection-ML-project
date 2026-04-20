@@ -1,0 +1,14 @@
+artifact_uri: file:///D:/fraud-detection-ml/notebooks/mlruns/523276471553061418/f4092edc61eb4bd7b21e71f612cd8a2a/artifacts
+end_time: 1776685830353
+entry_point_name: ''
+experiment_id: '523276471553061418'
+lifecycle_stage: active
+run_id: f4092edc61eb4bd7b21e71f612cd8a2a
+run_name: enchanting-mule-1
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1776685830196
+status: 3
+tags: []
+user_id: zk

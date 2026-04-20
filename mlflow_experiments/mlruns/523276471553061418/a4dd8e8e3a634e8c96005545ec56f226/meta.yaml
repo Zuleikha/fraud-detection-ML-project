@@ -1,0 +1,14 @@
+artifact_uri: file:///D:/fraud-detection-ml/notebooks/mlruns/523276471553061418/a4dd8e8e3a634e8c96005545ec56f226/artifacts
+end_time: 1776686056127
+entry_point_name: ''
+experiment_id: '523276471553061418'
+lifecycle_stage: active
+run_id: a4dd8e8e3a634e8c96005545ec56f226
+run_name: vaunted-perch-688
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1776686055980
+status: 3
+tags: []
+user_id: zk

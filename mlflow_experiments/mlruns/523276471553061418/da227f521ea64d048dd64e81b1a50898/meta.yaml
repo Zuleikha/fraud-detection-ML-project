@@ -1,0 +1,14 @@
+artifact_uri: file:///D:/fraud-detection-ml/notebooks/mlruns/523276471553061418/da227f521ea64d048dd64e81b1a50898/artifacts
+end_time: 1776685955844
+entry_point_name: ''
+experiment_id: '523276471553061418'
+lifecycle_stage: active
+run_id: da227f521ea64d048dd64e81b1a50898
+run_name: marvelous-wolf-155
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1776685955698
+status: 3
+tags: []
+user_id: zk
