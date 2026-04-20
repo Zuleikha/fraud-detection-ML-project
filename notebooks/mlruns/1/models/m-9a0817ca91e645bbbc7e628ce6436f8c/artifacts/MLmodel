@@ -1,0 +1,22 @@
+artifact_path: file:///D:/fraud-detection-ml/notebooks/mlruns/1/models/m-9a0817ca91e645bbbc7e628ce6436f8c/artifacts
+flavors:
+  python_function:
+    data: model.ubj
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.xgboost
+    python_version: 3.12.3
+  xgboost:
+    code: null
+    data: model.ubj
+    model_class: xgboost.sklearn.XGBClassifier
+    model_format: ubj
+    xgb_version: 3.2.0
+mlflow_version: 3.11.1
+model_id: m-9a0817ca91e645bbbc7e628ce6436f8c
+model_size_bytes: 749269
+model_uuid: m-9a0817ca91e645bbbc7e628ce6436f8c
+prompts: null
+run_id: 6850cdfbd36c47b3a891845a849c4fa3
+utc_time_created: '2026-04-20 15:04:11.197653'

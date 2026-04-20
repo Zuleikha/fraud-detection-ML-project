@@ -9,7 +9,10 @@
       "Bash(git -C /d/fraud-detection-ml commit -m \"remove duplicate scaffold notebooks\")",
       "Bash(git -C /d/fraud-detection-ml add notebooks/05_shap_explainability.ipynb)",
       "Bash(git -C /d/fraud-detection-ml commit -m \"add missing notebook 05 shap\")",
-      "Bash(git -C /d/fraud-detection-ml commit -m \"fix directory structure - outputs/ and mlflow_experiments/ in correct locations\")"
+      "Bash(git -C /d/fraud-detection-ml commit -m \"fix directory structure - outputs/ and mlflow_experiments/ in correct locations\")",
+      "Bash(python3 *)",
+      "Bash(git -C /d/fraud-detection-ml add notebooks/04_xgboost_tuning.ipynb)",
+      "Bash(git -C /d/fraud-detection-ml commit -m \"fix paths in notebook 04\")"
     ]
   }
 }
