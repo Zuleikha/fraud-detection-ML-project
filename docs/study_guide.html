@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fraud Detection ML — Study Guide</title>
+  <style>
+    /* ── Dyslexia-friendly base ── */
+    @import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap');
+
+    :root {
+      --blue-bg:    #E8F4FD;
+      --blue-bd:    #BDDCF5;
+      --green-bg:   #E8F8E8;
+      --green-bd:   #BDEABD;
+      --orange-bg:  #FEF3E2;
+      --orange-bd:  #F5D9A8;
+      --purple-bg:  #F3E8FD;
+      --purple-bd:  #D9BFEF;
+      --yellow-bg:  #FFFDE7;
+      --yellow-bd:  #F5E8A0;
+      --pink-bg:    #FCE4EC;
+      --pink-bd:    #F0B8CC;
+      --nav-bg:     #F5F5F5;
+      --nav-bd:     #DCDCDC;
+      --text:       #2C2C2C;
+      --subtle:     #555555;
+      --radius:     10px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Atkinson Hyperlegible', Arial, sans-serif;
+      font-size: 18px;
+      line-height: 1.85;
+      color: var(--text);
+      background: #FAFAFA;
+      letter-spacing: 0.02em;
+      word-spacing: 0.1em;
+    }
+
+    /* ── Navbar ── */
+    #navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--nav-bg);
+      border-bottom: 2px solid var(--nav-bd);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    #navbar span.nav-title {
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--subtle);
+      margin-right: 10px;
+      white-space: nowrap;
+    }
+
+    #navbar a {
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 5px 11px;
+      border-radius: 20px;
+      border: 2px solid transparent;
+      transition: background 0.2s, border-color 0.2s;
+      white-space: nowrap;
+    }
+
+    .nav-eda    { background: var(--blue-bg);   border-color: var(--blue-bd);   color: #1A5F8A; }
+    .nav-model  { background: var(--green-bg);  border-color: var(--green-bd);  color: #1A6B1A; }
+    .nav-shap   { background: var(--orange-bg); border-color: var(--orange-bd); color: #8A4A00; }
+    .nav-deploy { background: var(--purple-bg); border-color: var(--purple-bd); color: #5A1A8A; }
+
+    #navbar a:hover { filter: brightness(0.92); }
+
+    /* ── Page shell ── */
+    .page-wrap { max-width: 920px; margin: 0 auto; padding: 32px 20px 80px; }
+
+    .hero {
+      background: var(--nav-bg);
+      border: 2px solid var(--nav-bd);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      margin-bottom: 36px;
+      text-align: center;
+    }
+
+    .hero h1 { font-size: 1.9em; font-weight: 700; margin-bottom: 8px; }
+    .hero p  { color: var(--subtle); font-size: 1em; max-width: 600px; margin: 0 auto; }
+
+    /* progress bar */
+    #progress-wrap {
+      margin-top: 18px;
+      background: var(--nav-bd);
+      border-radius: 8px;
+      height: 12px;
+      overflow: hidden;
+    }
+    #progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #90CAF9, #A5D6A7, #FFCC80, #CE93D8);
+      transition: width 0.4s ease;
+      border-radius: 8px;
+    }
+    #progress-label { font-size: 13px; color: var(--subtle); margin-top: 6px; }
+
+    /* ── Section cards ── */
+    .section-card {
+      border-radius: var(--radius);
+      border: 2px solid transparent;
+      margin-bottom: 28px;
+      overflow: hidden;
+    }
+
+    .section-card.eda    { background: var(--blue-bg);   border-color: var(--blue-bd);   }
+    .section-card.model  { background: var(--green-bg);  border-color: var(--green-bd);  }
+    .section-card.shap   { background: var(--orange-bg); border-color: var(--orange-bd); }
+    .section-card.deploy { background: var(--purple-bg); border-color: var(--purple-bd); }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 24px;
+      cursor: pointer;
+      user-select: none;
+      gap: 12px;
+    }
+
+    .section-header:hover { filter: brightness(0.96); }
+
+    .section-header h2 {
+      font-size: 1.2em;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-badge {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 12px;
+      white-space: nowrap;
+    }
+
+    .eda    .section-badge { background: var(--blue-bd);   color: #1A5F8A; }
+    .model  .section-badge { background: var(--green-bd);  color: #1A6B1A; }
+    .shap   .section-badge { background: var(--orange-bd); color: #8A4A00; }
+    .deploy .section-badge { background: var(--purple-bd); color: #5A1A8A; }
+
+    .chevron {
+      font-size: 18px;
+      transition: transform 0.25s;
+      flex-shrink: 0;
+    }
+
+    .section-card.open .chevron { transform: rotate(180deg); }
+
+    .section-body {
+      display: none;
+      padding: 0 24px 24px;
+    }
+
+    .section-card.open .section-body { display: block; }
+
+    /* ── Content elements ── */
+    h3 {
+      font-size: 1.05em;
+      font-weight: 700;
+      margin: 22px 0 10px;
+    }
+
+    p { margin-bottom: 14px; }
+
+    ul, ol {
+      padding-left: 24px;
+      margin-bottom: 14px;
+    }
+
+    li { margin-bottom: 6px; }
+
+    /* Key term highlight */
+    .term {
+      background: var(--pink-bg);
+      border: 1px solid var(--pink-bd);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-weight: 700;
+      cursor: help;
+      position: relative;
+    }
+
+    .term .tip {
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #fff;
+      border: 2px solid var(--pink-bd);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.5;
+      width: 280px;
+      z-index: 200;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      color: var(--text);
+    }
+
+    .term:hover .tip,
+    .term:focus .tip { display: block; }
+
+    /* Summary / callout box */
+    .summary-box {
+      background: var(--yellow-bg);
+      border: 2px solid var(--yellow-bd);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin: 18px 0;
+    }
+
+    .summary-box .box-title {
+      font-weight: 700;
+      font-size: 0.95em;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Code blocks */
+    pre {
+      background: rgba(0,0,0,0.05);
+      border-radius: 8px;
+      padding: 14px 16px;
+      overflow-x: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 14px 0;
+      border: 1px solid rgba(0,0,0,0.08);
+    }
+
+    code { font-family: 'Courier New', monospace; font-size: 0.9em; }
+
+    /* Tables */
+    .table-wrap { overflow-x: auto; margin: 14px 0; }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 15px;
+    }
+
+    th {
+      background: rgba(0,0,0,0.07);
+      font-weight: 700;
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 2px solid rgba(0,0,0,0.1);
+    }
+
+    td {
+      padding: 9px 14px;
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    /* ── Quiz / flashcard ── */
+    .quiz-block {
+      margin: 20px 0;
+    }
+
+    .quiz-block h3 {
+      font-size: 1em;
+      margin-bottom: 12px;
+    }
+
+    .flashcard {
+      border-radius: var(--radius);
+      border: 2px solid rgba(0,0,0,0.1);
+      background: #fff;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .fc-question {
+      padding: 14px 18px;
+      font-weight: 700;
+      font-size: 0.95em;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .fc-question:hover { background: rgba(0,0,0,0.03); }
+
+    .fc-answer {
+      display: none;
+      padding: 14px 18px;
+      border-top: 2px solid rgba(0,0,0,0.07);
+      font-size: 0.93em;
+      background: var(--yellow-bg);
+      line-height: 1.75;
+    }
+
+    .fc-answer.visible { display: block; }
+
+    .fc-icon { flex-shrink: 0; font-size: 16px; transition: transform 0.2s; }
+    .flashcard.open .fc-icon { transform: rotate(45deg); }
+
+    /* ── Metric cards ── */
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+      margin: 16px 0;
+    }
+
+    .metric-card {
+      background: #fff;
+      border-radius: var(--radius);
+      border: 2px solid rgba(0,0,0,0.08);
+      padding: 16px;
+      text-align: center;
+    }
+
+    .metric-card .metric-name { font-weight: 700; font-size: 0.9em; margin-bottom: 6px; }
+    .metric-card .metric-formula {
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      background: rgba(0,0,0,0.05);
+      border-radius: 6px;
+      padding: 6px 8px;
+      margin-bottom: 8px;
+    }
+    .metric-card .metric-desc { font-size: 13px; color: var(--subtle); }
+
+    /* ── Threshold slider ── */
+    .slider-demo {
+      background: #fff;
+      border: 2px solid rgba(0,0,0,0.08);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin: 18px 0;
+    }
+
+    .slider-demo label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .slider-demo input[type="range"] {
+      width: 100%;
+      accent-color: #CE93D8;
+      margin-bottom: 14px;
+    }
+
+    .slider-results {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px;
+    }
+
+    .slider-stat {
+      background: rgba(0,0,0,0.04);
+      border-radius: 8px;
+      padding: 10px 12px;
+      text-align: center;
+    }
+
+    .slider-stat .s-label { font-size: 12px; color: var(--subtle); margin-bottom: 4px; }
+    .slider-stat .s-val   { font-size: 1.4em; font-weight: 700; }
+
+    /* ── Pipeline flow ── */
+    .pipeline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+      align-items: center;
+      margin: 16px 0;
+    }
+
+    .pipe-step {
+      background: #fff;
+      border: 2px solid rgba(0,0,0,0.1);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+      min-width: 110px;
+    }
+
+    .pipe-arrow {
+      font-size: 20px;
+      color: var(--subtle);
+      padding: 0 4px;
+    }
+
+    /* ── Confusion matrix visual ── */
+    .cm-grid {
+      display: grid;
+      grid-template-columns: auto 1fr 1fr;
+      grid-template-rows: auto 1fr 1fr;
+      gap: 3px;
+      margin: 16px 0;
+      max-width: 420px;
+    }
+
+    .cm-header {
+      background: rgba(0,0,0,0.07);
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-weight: 700;
+      font-size: 13px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cm-cell {
+      border-radius: 8px;
+      padding: 14px 10px;
+      text-align: center;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .cm-tn { background: #E8F8E8; border: 2px solid #BDEABD; }
+    .cm-fp { background: #FEF3E2; border: 2px solid #F5D9A8; }
+    .cm-fn { background: #FCE4EC; border: 2px solid #F0B8CC; }
+    .cm-tp { background: #E8F4FD; border: 2px solid #BDDCF5; }
+
+    .cm-cell .cm-label { font-weight: 700; font-size: 13px; }
+    .cm-cell .cm-meaning { font-size: 12px; color: var(--subtle); margin-top: 3px; }
+
+    /* ── Mark as read button ── */
+    .read-btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 22px;
+      border-radius: 20px;
+      border: 2px solid;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      background: transparent;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .eda    .read-btn { border-color: var(--blue-bd);   color: #1A5F8A; }
+    .model  .read-btn { border-color: var(--green-bd);  color: #1A6B1A; }
+    .shap   .read-btn { border-color: var(--orange-bd); color: #8A4A00; }
+    .deploy .read-btn { border-color: var(--purple-bd); color: #5A1A8A; }
+
+    .read-btn.done { color: #fff !important; }
+    .eda    .read-btn.done { background: #7BBFE8; border-color: #7BBFE8; }
+    .model  .read-btn.done { background: #7BC87B; border-color: #7BC87B; }
+    .shap   .read-btn.done { background: #E8A85A; border-color: #E8A85A; }
+    .deploy .read-btn.done { background: #B87EE8; border-color: #B87EE8; }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      body { font-size: 16px; }
+      .hero h1 { font-size: 1.4em; }
+      .pipeline { flex-direction: column; align-items: flex-start; }
+      .pipe-arrow { transform: rotate(90deg); }
+      #navbar { padding: 8px 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════ NAVBAR ═══════════════════════════════════ -->
+<nav id="navbar">
+  <span class="nav-title">Fraud ML</span>
+  <a href="#overview"     class="nav-eda">Overview</a>
+  <a href="#eda"          class="nav-eda">EDA</a>
+  <a href="#features"     class="nav-eda">Features</a>
+  <a href="#baseline"     class="nav-model">Baseline</a>
+  <a href="#imbalance"    class="nav-model">Imbalance</a>
+  <a href="#xgboost"      class="nav-model">XGBoost</a>
+  <a href="#evaluation"   class="nav-model">Evaluation</a>
+  <a href="#shap"         class="nav-shap">SHAP</a>
+  <a href="#threshold"    class="nav-shap">Threshold</a>
+  <a href="#api"          class="nav-deploy">API</a>
+  <a href="#monitoring"   class="nav-deploy">Monitoring</a>
+</nav>
+
+<!-- ═══════════════════════════════════ HERO ═══════════════════════════════════ -->
+<div class="page-wrap">
+  <div class="hero">
+    <h1>Fraud Detection ML — Study Guide</h1>
+    <p>A dyslexia-friendly, interactive walkthrough of the full pipeline: from raw data to a deployed API.</p>
+    <div id="progress-wrap">
+      <div id="progress-bar"></div>
+    </div>
+    <p id="progress-label">0 of 9 sections marked as read</p>
+  </div>
+
+<!-- ═══════════════════════════════════ 1. OVERVIEW ═══════════════════════════════════ -->
+<div id="overview" class="section-card eda">
+  <div class="section-header" onclick="toggle(this)">
+    <h2>🗺️ Project Overview <span class="section-badge">Notebook 0</span></h2>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="section-body">
+    <p>We are building a <span class="term">binary classifier<span class="tip">A model that puts every input into one of exactly two groups — here: fraud or legit.</span></span> that reads one credit card transaction and outputs a fraud probability (0–1) plus a yes/no decision.</p>
+
+    <h3>Why fraud detection is a great learning project</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>ML challenge</th><th>Why it appears here</th></tr>
+        <tr><td><span class="term">Class imbalance<span class="tip">When one category (fraud) is much rarer than the other (legit), the dataset is imbalanced.</span></span></td><td>Fraud is only 0.17% of transactions</td></tr>
+        <tr><td>Threshold tuning</td><td>Precision vs recall has a direct dollar cost</td></tr>
+        <tr><td>Feature engineering</td><td>Raw fields alone are weak — velocity history matters</td></tr>
+        <tr><td>Deployment</td><td>Low-latency single-transaction inference</td></tr>
+        <tr><td>Monitoring</td><td>Distribution drift kills model performance silently</td></tr>
+      </table>
+    </div>
+
+    <div class="summary-box">
+      <div class="box-title">📍 What this project is NOT</div>
+      <ul>
+        <li>A real-time streaming system (Kafka, Flink)</li>
+        <li>A graph neural network model</li>
+        <li>A full MLOps platform with automatic retraining</li>
+      </ul>
+    </div>
+
+    <h3>Learning path</h3>
+    <div class="pipeline">
+      <div class="pipe-step">01<br>Overview</div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">02<br>EDA</div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">03<br>Features</div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">04<br>Training</div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">05<br>Evaluation</div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">06<br>Threshold</div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">07<br>Deployment</div>
+    </div>
+
+    <button class="read-btn" onclick="markRead(this, 'overview')">Mark as read ✓</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ 2. EDA ═══════════════════════════════════ -->
+<div id="eda" class="section-card eda">
+  <div class="section-header" onclick="toggle(this)">
+    <h2>📊 Exploratory Data Analysis <span class="section-badge">Notebook 01</span></h2>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="section-body">
+    <h3>The dataset</h3>
+    <p>284,807 transactions. Only <strong>492</strong> are fraud — that is <strong>0.17%</strong>. This extreme imbalance is not a data problem. It is reality.</p>
+
+    <div class="summary-box">
+      <div class="box-title">⚠️ Why accuracy is useless here</div>
+      <p>A model that predicts "legit" for <em>every single transaction</em> scores <strong>99.83% accuracy</strong> and catches <strong>zero fraud</strong>. Accuracy is a broken metric when classes are imbalanced.</p>
+    </div>
+
+    <h3>EDA checklist — always do this before touching a model</h3>
+    <ul>
+      <li>Check for <strong>missing values</strong> — are any features always null for fraud?</li>
+      <li>Plot <strong>amount distribution</strong> — fraud often clusters at unusual amounts</li>
+      <li>Look at <strong>time patterns</strong> — fraud spikes at certain hours</li>
+      <li>Check <strong>correlation with label</strong> — which raw features separate fraud from legit?</li>
+    </ul>
+
+    <h3>The class imbalance problem visualised</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Class</th><th>Count</th><th>Percentage</th></tr>
+        <tr><td>Legit</td><td>284,315</td><td>99.83%</td></tr>
+        <tr><td>Fraud</td><td>492</td><td>0.17%</td></tr>
+      </table>
+    </div>
+
+    <div class="quiz-block">
+      <h3>Quick-check questions</h3>
+      <div class="flashcard" onclick="toggleCard(this)">
+        <div class="fc-question">Why can we not use accuracy to measure our fraud model? <span class="fc-icon">+</span></div>
+        <div class="fc-answer">Because the data is so imbalanced. A model that predicts "legit" for every transaction gets 99.83% accuracy while catching zero fraud. Accuracy rewards predicting the majority class, so it hides terrible performance on the minority class (fraud).</div>
+      </div>
+      <div class="flashcard" onclick="toggleCard(this)">
+        <div class="fc-question">What is class imbalance and why does it matter? <span class="fc-icon">+</span></div>
+        <div class="fc-answer">Class imbalance is when one outcome is far rarer than the other. Here fraud is 0.17% of data. It matters because most algorithms optimise for overall accuracy, so they learn to ignore the rare class entirely unless we correct for it.</div>
+      </div>
+    </div>
+
+    <button class="read-btn" onclick="markRead(this, 'eda')">Mark as read ✓</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ 3. FEATURES ═══════════════════════════════════ -->
+<div id="features" class="section-card eda">
+  <div class="section-header" onclick="toggle(this)">
+    <h2>🔧 Feature Engineering <span class="section-badge">Notebook 01 / 03</span></h2>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="section-body">
+    <p>A single transaction row tells you: amount, merchant, card type, time. That is not enough signal. A €500 electronics purchase at 2am is suspicious — <em>but only if the card normally makes €30 supermarket purchases at noon</em>. Context comes from history.</p>
+
+    <h3>1. Time features</h3>
+    <ul>
+      <li><code>hour_of_day</code> (0–23) — fraud spikes at unusual hours</li>
+      <li><code>day_of_week</code> (0–6) — weekend patterns differ</li>
+    </ul>
+
+    <h3>2. Velocity features</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Feature</th><th>Window</th><th>What it captures</th></tr>
+        <tr><td><code>transactions_last_1h</code></td><td>1 hour</td><td>Burst activity — card testing</td></tr>
+        <tr><td><code>transactions_last_24h</code></td><td>24 hours</td><td>Daily usage anomaly</td></tr>
+        <tr><td><code>amount_mean_last_24h</code></td><td>24 hours</td><td>Normal spend level</td></tr>
+        <tr><td><code>amount_std_last_24h</code></td><td>24 hours</td><td>Spend variability</td></tr>
+      </table>
+    </div>
+
+    <div class="summary-box">
+      <div class="box-title">🔍 Classic fraud signature</div>
+      <p><code>transactions_last_1h = 5</code> + <code>amount = €0.01</code> is card-testing. A fraudster does multiple tiny transactions to check if a stolen card is live before making one big purchase.</p>
+    </div>
+
+    <h3>3. Categorical features</h3>
+    <ul>
+      <li><span class="term">merchant_category<span class="tip">Groups like gambling, electronics, travel that carry different fraud risk profiles.</span></span> — one-hot encoded</li>
+      <li><code>card_type</code> (credit / debit / prepaid) — one-hot encoded</li>
+    </ul>
+
+    <h3>The preprocessing pipeline</h3>
+    <pre>ColumnTransformer([
+    ("num", StandardScaler(),   numeric_features),
+    ("cat", OneHotEncoder(...), categorical_features),
+])</pre>
+    <p><span class="term">StandardScaler<span class="tip">Transforms each numeric column to have mean=0 and standard deviation=1. Required for distance-based models like logistic regression.</span></span> is essential for logistic regression and SVM. RandomForest doesn't need it — but it doesn't hurt and keeps the pipeline consistent if you swap algorithms later.</p>
+
+    <div class="quiz-block">
+      <h3>Quick-check questions</h3>
+      <div class="flashcard" onclick="toggleCard(this)">
+        <div class="fc-question">What are velocity features and why are they important? <span class="fc-icon">+</span></div>
+        <div class="fc-answer">Velocity features count or summarise a card's recent activity (e.g. number of transactions in the last hour). They are important because a single transaction looks normal in isolation — but 5 transactions in 10 minutes is a red flag for card-testing fraud.</div>
+      </div>
+      <div class="flashcard" onclick="toggleCard(this)">
+        <div class="fc-question">Why must SMOTE be applied inside the training fold only? <span class="fc-icon">+</span></div>
+        <div class="fc-answer">If you apply SMOTE before the train/test split, synthetic fraud examples from the training set leak into the test set. Your evaluation metrics will look better than they really are — a false sense of confidence.</div>
+      </div>
+    </div>
+
+    <button class="read-btn" onclick="markRead(this, 'features')">Mark as read ✓</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ 4. BASELINE ═══════════════════════════════════ -->
+<div id="baseline" class="section-card model">
+  <div class="section-header" onclick="toggle(this)">
+    <h2>🌲 Baseline Model — Random Forest <span class="section-badge">Notebook 02</span></h2>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="section-body">
+    <p>We start with <span class="term">Random Forest<span class="tip">An ensemble of many decision trees. Each tree sees a random sample of data and features. The final prediction is the majority vote across all trees.</span></span>. It is not the most accurate algorithm — but it requires minimal tuning to get a useful baseline.</p>
+
+    <h3>Algorithm comparison</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Algorithm</th><th>Pros</th><th>Cons</th></tr>
+        <tr><td>Logistic Regression</td><td>Interpretable, fast</td><td>Weak on non-linear patterns</td></tr>
+        <tr><td><strong>Random Forest ✓</strong></td><td>Handles mixed types, robust</td><td>Less accurate than boosting</td></tr>
+        <tr><td>XGBoost / LightGBM</td><td>State-of-the-art accuracy</td><td>Harder to tune</td></tr>
+        <tr><td>Neural Network</td><td>Captures complex patterns</td><td>Needs lots of data, slow to iterate</td></tr>
+      </table>
+    </div>
+
+    <h3>Full training pipeline</h3>
+    <div class="pipeline">
+      <div class="pipe-step">Raw data</div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">Time features</div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">Velocity features</div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">ColumnTransformer</div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">SMOTE</div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">Random Forest</div>
+    </div>
+
+    <h3>Key parameters</h3>
+    <pre>RandomForestClassifier(
+    n_estimators=200,        # 200 trees — more = more stable but slower
+    class_weight="balanced", # also upweight minority class
+    random_state=42,         # reproducibility
+    n_jobs=-1,               # use all CPU cores
+)</pre>
+
+    <div class="summary-box">
+      <div class="box-title">📌 stratify=y matters</div>
+      <p>Always use <code>train_test_split(..., stratify=y)</code>. Without it a random split might put all 492 fraud cases in training and zero in the test set — then you cannot evaluate at all.</p>
+    </div>
+
+    <div class="quiz-block">
+      <h3>Quick-check questions</h3>
+      <div class="flashcard" onclick="toggleCard(this)">
+        <div class="fc-question">Why is Random Forest a good starting point rather than XGBoost? <span class="fc-icon">+</span></div>
+        <div class="fc-answer">Random Forest needs minimal tuning and produces useful results quickly. It is better to get a working pipeline end-to-end first, then swap in XGBoost once you have a solid baseline to compare against.</div>
+      </div>
+      <div class="flashcard" onclick="toggleCard(this)">
+        <div class="fc-question">What does class_weight="balanced" do? <span class="fc-icon">+</span></div>
+        <div class="fc-answer">It tells the algorithm to penalise misclassifying the minority class (fraud) proportionally more than the majority class (legit). If fraud is 1/588 of data, each fraud mistake counts 588× more in the loss function.</div>
+      </div>
+    </div>
+
+    <button class="read-btn" onclick="markRead(this, 'baseline')">Mark as read ✓</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ 5. IMBALANCE ═══════════════════════════════════ -->
+<div id="imbalance" class="section-card model">
+  <div class="section-header" onclick="toggle(this)">
+    <h2>⚖️ Handling Class Imbalance <span class="section-badge">Notebook 03</span></h2>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="section-body">
+    <h3>Three strategies</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Strategy</th><th>What it does</th><th>Trade-off</th></tr>
+        <tr><td>Class weights</td><td>Penalises misclassifying minority class more</td><td>Fast, no new samples</td></tr>
+        <tr><td>Undersampling</td><td>Randomly drop majority class rows</td><td>Loses information</td></tr>
+        <tr><td><span class="term">SMOTE<span class="tip">Synthetic Minority Oversampling TEchnique. Creates new synthetic fraud examples by interpolating between existing ones.</span></span></td><td>Synthesises new minority class examples</td><td>Adds information, risk of overfitting</td></tr>
+      </table>
+    </div>
+
+    <div class="summary-box">
+      <div class="box-title">🛡️ The golden rule of SMOTE</div>
+      <p>Apply SMOTE <strong>inside the training pipeline, on the training fold only</strong>. Never before the train/test split. If you do it before the split, synthetic examples contaminate the test set and your evaluation metrics are optimistically wrong.</p>
+    </div>
+
+    <h3>Why we use both SMOTE and class_weight</h3>
+    <p>With 0.17% fraud rate the imbalance is extreme. Using both is "belt-and-braces" — in practice one or the other is usually enough, but here we use both because the minority class is so rare.</p>
+
+    <div class="quiz-block">
+      <h3>Quick-check questions</h3>
+      <div class="flashcard" onclick="toggleCard(this)">
+        <div class="fc-question">What is the difference between SMOTE and undersampling? <span class="fc-icon">+</span></div>
+        <div class="fc-answer">SMOTE creates new synthetic examples of the minority class (fraud) by interpolating between existing ones — you end up with more data. Undersampling randomly removes examples from the majority class (legit) — you end up with less data and potentially lose real information.</div>
+      </div>
+    </div>
+
+    <button class="read-btn" onclick="markRead(this, 'imbalance')">Mark as read ✓</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ 6. XGBOOST ═══════════════════════════════════ -->
+<div id="xgboost" class="section-card model">
+  <div class="section-header" onclick="toggle(this)">
+    <h2>🚀 XGBoost Tuning <span class="section-badge">Notebook 04</span></h2>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="section-body">
+    <p><span class="term">XGBoost<span class="tip">eXtreme Gradient Boosting — builds trees sequentially, each one correcting the errors of the previous. State-of-the-art for tabular data competitions.</span></span> is the step up from Random Forest. It builds trees <em>sequentially</em> rather than in parallel — each tree learns to fix the mistakes of the previous ones.</p>
+
+    <h3>Key XGBoost parameters</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Parameter</th><th>What it controls</th><th>Starting value</th></tr>
+        <tr><td><code>n_estimators</code></td><td>Number of trees</td><td>300–500</td></tr>
+        <tr><td><code>max_depth</code></td><td>Depth of each tree (complexity)</td><td>4–6</td></tr>
+        <tr><td><code>learning_rate</code></td><td>How much each tree contributes</td><td>0.05–0.1</td></tr>
+        <tr><td><code>subsample</code></td><td>Fraction of rows used per tree</td><td>0.8</td></tr>
+        <tr><td><code>scale_pos_weight</code></td><td>Handles class imbalance (like class_weight)</td><td>legit_count / fraud_count</td></tr>
+      </table>
+    </div>
+
+    <div class="summary-box">
+      <div class="box-title">📌 Use early stopping</div>
+      <p>Set <code>early_stopping_rounds=50</code>. XGBoost will stop adding trees when the validation score stops improving — prevents overfitting and saves time.</p>
+    </div>
+
+    <div class="quiz-block">
+      <h3>Quick-check questions</h3>
+      <div class="flashcard" onclick="toggleCard(this)">
+        <div class="fc-question">How does XGBoost differ from Random Forest? <span class="fc-icon">+</span></div>
+        <div class="fc-answer">Random Forest builds many trees in parallel — each independently. XGBoost builds trees sequentially — each new tree focuses on the residual errors left by all previous trees. This makes XGBoost more accurate but also more prone to overfitting if not tuned carefully.</div>
+      </div>
+    </div>
+
+    <button class="read-btn" onclick="markRead(this, 'xgboost')">Mark as read ✓</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ 7. EVALUATION ═══════════════════════════════════ -->
+<div id="evaluation" class="section-card model">
+  <div class="section-header" onclick="toggle(this)">
+    <h2>📏 Model Evaluation <span class="section-badge">Notebook 02 / 05</span></h2>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="section-body">
+    <h3>The four metrics that matter</h3>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-name">Precision</div>
+        <div class="metric-formula">TP / (TP + FP)</div>
+        <div class="metric-desc">Of flagged transactions, how many were really fraud?<br>Low = too many false alarms → customer churn</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-name">Recall</div>
+        <div class="metric-formula">TP / (TP + FN)</div>
+        <div class="metric-desc">Of all real fraud, how much did we catch?<br>Low = fraud slips through → financial loss</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-name">ROC-AUC</div>
+        <div class="metric-formula">area under ROC curve</div>
+        <div class="metric-desc">How well the model ranks fraud above legit. Good for comparing models. Not for choosing a threshold.</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-name">PR-AUC</div>
+        <div class="metric-formula">area under PR curve</div>
+        <div class="metric-desc">More informative than ROC-AUC when classes are imbalanced — focuses on minority class.</div>
+      </div>
+    </div>
+
+    <h3>The confusion matrix</h3>
+    <div class="cm-grid">
+      <div></div>
+      <div class="cm-header">Predicted Legit</div>
+      <div class="cm-header">Predicted Fraud</div>
+      <div class="cm-header" style="writing-mode: vertical-lr; transform: rotate(180deg); padding: 8px 4px; font-size:12px;">Actual Legit</div>
+      <div class="cm-cell cm-tn"><div class="cm-label">TN ✅</div><div class="cm-meaning">Correctly approved — customer happy</div></div>
+      <div class="cm-cell cm-fp"><div class="cm-label">FP ⚠️</div><div class="cm-meaning">Blocked legit customer — churn risk</div></div>
+      <div class="cm-header" style="writing-mode: vertical-lr; transform: rotate(180deg); padding: 8px 4px; font-size:12px;">Actual Fraud</div>
+      <div class="cm-cell cm-fn"><div class="cm-label">FN 🚨</div><div class="cm-meaning">Fraud slips through — financial loss</div></div>
+      <div class="cm-cell cm-tp"><div class="cm-label">TP ✅</div><div class="cm-meaning">Fraud blocked — money saved</div></div>
+    </div>
+
+    <div class="quiz-block">
+      <h3>Quick-check questions</h3>
+      <div class="flashcard" onclick="toggleCard(this)">
+        <div class="fc-question">What is the business cost of a False Negative vs a False Positive? <span class="fc-icon">+</span></div>
+        <div class="fc-answer">False Negative (FN): fraud slips through → direct financial loss (the bank/merchant absorbs the fraudulent charge). False Positive (FP): a legitimate customer is blocked → frustration, support call costs, and risk of losing that customer.</div>
+      </div>
+      <div class="flashcard" onclick="toggleCard(this)">
+        <div class="fc-question">Why is PR-AUC better than ROC-AUC for fraud detection? <span class="fc-icon">+</span></div>
+        <div class="fc-answer">ROC-AUC includes True Negatives in its calculation — and we have 284,000 of them. A high TN count inflates ROC-AUC and hides poor performance on fraud. PR-AUC only looks at precision and recall, which are both about the minority class, so it gives a more honest picture.</div>
+      </div>
+    </div>
+
+    <button class="read-btn" onclick="markRead(this, 'evaluation')">Mark as read ✓</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ 8. SHAP ═══════════════════════════════════ -->
+<div id="shap" class="section-card shap">
+  <div class="section-header" onclick="toggle(this)">
+    <h2>🔍 SHAP Explainability <span class="section-badge">Notebook 05</span></h2>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="section-body">
+    <p><span class="term">SHAP<span class="tip">SHapley Additive exPlanations — from game theory. Assigns each feature a contribution score for a specific prediction. Positive = pushed toward fraud. Negative = pushed toward legit.</span></span> (SHapley Additive exPlanations) answers: <em>why did the model predict this transaction is fraud?</em></p>
+
+    <h3>What SHAP tells you</h3>
+    <ul>
+      <li><strong>Global importance:</strong> which features matter most across all predictions (beeswarm plot, bar chart)</li>
+      <li><strong>Local explanation:</strong> why the model scored <em>this specific transaction</em> as fraud (waterfall / force plot)</li>
+    </ul>
+
+    <div class="summary-box">
+      <div class="box-title">📌 What we found</div>
+      <p>Velocity features — especially <code>transactions_last_1h</code> and <code>amount_mean_last_24h</code> — are the top fraud signals. The engineered features matter more than the raw transaction fields. This confirms that context beats a snapshot.</p>
+    </div>
+
+    <h3>Reading a SHAP waterfall chart</h3>
+    <ul>
+      <li><strong>Red bars (positive SHAP value)</strong> — pushed the score toward fraud</li>
+      <li><strong>Blue bars (negative SHAP value)</strong> — pushed the score toward legit</li>
+      <li>The sum of all SHAP values = final prediction - average prediction</li>
+    </ul>
+
+    <h3>Key SHAP plots</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Plot</th><th>What it shows</th></tr>
+        <tr><td>Bar chart</td><td>Mean absolute SHAP value per feature — global ranking</td></tr>
+        <tr><td>Beeswarm</td><td>Distribution of SHAP values for each feature across all samples</td></tr>
+        <tr><td>Waterfall</td><td>Per-prediction breakdown — which features pushed this score up/down</td></tr>
+        <tr><td>Dependence plot</td><td>How a single feature's SHAP value changes across its value range</td></tr>
+      </table>
+    </div>
+
+    <div class="quiz-block">
+      <h3>Quick-check questions</h3>
+      <div class="flashcard" onclick="toggleCard(this)">
+        <div class="fc-question">What does a SHAP value of +0.4 for transactions_last_1h mean? <span class="fc-icon">+</span></div>
+        <div class="fc-answer">It means that the value of transactions_last_1h for this particular transaction pushed the model's fraud score up by 0.4 log-odds (or probability units, depending on the model type). The feature increased the fraud probability for this transaction.</div>
+      </div>
+      <div class="flashcard" onclick="toggleCard(this)">
+        <div class="fc-question">Why are SHAP values useful in production fraud detection? <span class="fc-icon">+</span></div>
+        <div class="fc-answer">When a customer calls to dispute a blocked transaction, you can tell them exactly why — "this transaction was flagged because your card made 4 transactions in the last hour, which is unusual for your account." It makes the model's decision auditable and explainable to non-technical stakeholders.</div>
+      </div>
+    </div>
+
+    <button class="read-btn" onclick="markRead(this, 'shap')">Mark as read ✓</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ 9. THRESHOLD ═══════════════════════════════════ -->
+<div id="threshold" class="section-card shap">
+  <div class="section-header" onclick="toggle(this)">
+    <h2>🎚️ Threshold Tuning <span class="section-badge">Notebook 06</span></h2>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="section-body">
+    <p>When sklearn calls <code>model.predict()</code>, the default cutoff is 0.5. For fraud detection this is almost always wrong. With a 0.17% fraud rate, model probabilities cluster near 0 — a threshold of 0.5 flags almost nothing.</p>
+
+    <div class="summary-box">
+      <div class="box-title">💡 The fundamental tradeoff</div>
+      <ul>
+        <li><strong>Lower threshold</strong> → recall rises (catch more fraud) → precision falls (more false alarms)</li>
+        <li><strong>Higher threshold</strong> → precision rises (fewer false alarms) → recall falls (miss more fraud)</li>
+        <li>There is no free lunch. Every threshold is a <em>business decision</em>, not a technical one.</li>
+      </ul>
+    </div>
+
+    <h3>Cost-based threshold selection</h3>
+    <pre>fn_cost = 150   # fraud gets through — bank absorbs loss
+fp_cost = 5     # customer wrongly blocked — support + churn risk
+
+optimal_threshold = threshold that minimises (FP × fp_cost + FN × fn_cost)</pre>
+
+    <p>With <code>fn_cost / fp_cost = 30</code>, each missed fraud is 30× more expensive than a false alarm. This pushes the threshold down — you'd rather block 30 legitimate transactions than miss one fraud case.</p>
+
+    <h3>Interactive: how threshold affects outcomes</h3>
+    <div class="slider-demo">
+      <label for="thresh-slider">Threshold: <strong id="thresh-val">0.30</strong></label>
+      <input type="range" id="thresh-slider" min="0.05" max="0.70" step="0.01" value="0.30" oninput="updateThreshold(this.value)" />
+      <div class="slider-results">
+        <div class="slider-stat"><div class="s-label">Fraud caught (TP)</div><div class="s-val" id="s-tp">91</div></div>
+        <div class="slider-stat"><div class="s-label">False alarms (FP)</div><div class="s-val" id="s-fp">180</div></div>
+        <div class="slider-stat"><div class="s-label">Missed fraud (FN)</div><div class="s-val" id="s-fn">7</div></div>
+        <div class="slider-stat"><div class="s-label">Recall</div><div class="s-val" id="s-recall">92.9%</div></div>
+        <div class="slider-stat"><div class="s-label">Precision</div><div class="s-val" id="s-prec">33.6%</div></div>
+        <div class="slider-stat"><div class="s-label">Total cost (€)</div><div class="s-val" id="s-cost">5,950</div></div>
+      </div>
+    </div>
+
+    <h3>Where the threshold lives</h3>
+    <pre># config/config.yaml
+prediction:
+  threshold: 0.3</pre>
+    <p>The threshold is a config value — not hardcoded. You can change it without retraining the model or redeploying the artefact. This separation is intentional: the <strong>model artefact</strong> captures learned patterns; the <strong>threshold</strong> captures a business decision.</p>
+
+    <div class="quiz-block">
+      <h3>Quick-check questions</h3>
+      <div class="flashcard" onclick="toggleCard(this)">
+        <div class="fc-question">If fn_cost is 5× higher than fp_cost, should the threshold be higher or lower than 0.5? <span class="fc-icon">+</span></div>
+        <div class="fc-answer">Lower. A higher fn_cost means missing fraud is much more expensive than a false alarm. To catch more fraud (increase recall) you lower the threshold — accepting more false positives in exchange for fewer missed fraud cases.</div>
+      </div>
+      <div class="flashcard" onclick="toggleCard(this)">
+        <div class="fc-question">Why is 0.5 almost always the wrong threshold for fraud detection? <span class="fc-icon">+</span></div>
+        <div class="fc-answer">With only 0.17% fraud, the model learns that most transactions are legit, so it outputs low fraud probabilities across the board. A threshold of 0.5 will flag almost nothing because very few predictions exceed 0.5. You need a much lower threshold, e.g. 0.3 or 0.28.</div>
+      </div>
+    </div>
+
+    <button class="read-btn" onclick="markRead(this, 'threshold')">Mark as read ✓</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ 10. API ═══════════════════════════════════ -->
+<div id="api" class="section-card deploy">
+  <div class="section-header" onclick="toggle(this)">
+    <h2>🌐 FastAPI Deployment <span class="section-badge">Notebook 07</span></h2>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="section-body">
+    <h3>Notebook vs Production API</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Notebook</th><th>Production API</th></tr>
+        <tr><td>Runs top-to-bottom, once</td><td>Runs indefinitely, handles many requests</td></tr>
+        <tr><td>Loads model each run</td><td>Loads model <strong>once</strong> at startup</td></tr>
+        <tr><td>You call it</td><td>Load balancer calls it</td></tr>
+        <tr><td>No input validation</td><td>Pydantic validates every request shape</td></tr>
+        <tr><td>No health check</td><td><code>/health</code> keeps the balancer informed</td></tr>
+      </table>
+    </div>
+
+    <h3>Request lifecycle</h3>
+    <div class="pipeline" style="flex-direction: column; align-items: flex-start; gap: 6px;">
+      <div class="pipe-step" style="width:100%; text-align:left; padding: 10px 16px;">1. Client sends POST /predict with transaction JSON</div>
+      <div class="pipe-arrow" style="transform: rotate(90deg); margin-left: 40px;">→</div>
+      <div class="pipe-step" style="width:100%; text-align:left; padding: 10px 16px;">2. Pydantic validates shape — rejects malformed input with 422</div>
+      <div class="pipe-arrow" style="transform: rotate(90deg); margin-left: 40px;">→</div>
+      <div class="pipe-step" style="width:100%; text-align:left; padding: 10px 16px;">3. pipeline.predict_proba() → fraud probability</div>
+      <div class="pipe-arrow" style="transform: rotate(90deg); margin-left: 40px;">→</div>
+      <div class="pipe-step" style="width:100%; text-align:left; padding: 10px 16px;">4. Compare prob to threshold from config</div>
+      <div class="pipe-arrow" style="transform: rotate(90deg); margin-left: 40px;">→</div>
+      <div class="pipe-step" style="width:100%; text-align:left; padding: 10px 16px;">5. Return { fraud_probability, is_fraud, threshold_used }</div>
+    </div>
+
+    <div class="summary-box">
+      <div class="box-title">💡 Load the model once at startup</div>
+      <p>Use FastAPI's <code>lifespan</code> context manager to load the model when the server starts. Every request then reuses the same in-memory object. If you loaded inside the endpoint function, you'd pay a ~200ms disk read on every single call.</p>
+    </div>
+
+    <h3>The /health endpoint</h3>
+    <pre>@app.get("/health")
+def health():
+    return {"status": "ok"}</pre>
+    <p>This exists for the <strong>load balancer</strong>. When Render (or Kubernetes) deploys your service, it polls <code>/health</code> continuously. If it stops returning 200, the platform stops routing traffic to that instance and may restart it. This means new deployments only receive traffic after they pass the health check.</p>
+
+    <div class="quiz-block">
+      <h3>Quick-check questions</h3>
+      <div class="flashcard" onclick="toggleCard(this)">
+        <div class="fc-question">Why must the model be loaded at startup rather than per request? <span class="fc-icon">+</span></div>
+        <div class="fc-answer">Loading a scikit-learn model from disk takes ~200ms. At 100 requests per second that adds 20 seconds of wasted load time per second — the service would fall over. Loading once at startup and reusing the in-memory object costs near zero per request.</div>
+      </div>
+      <div class="flashcard" onclick="toggleCard(this)">
+        <div class="fc-question">What does Pydantic do in the API? <span class="fc-icon">+</span></div>
+        <div class="fc-answer">Pydantic validates every incoming request against a schema. If a field is missing, the wrong type, or out of range, it immediately returns HTTP 422 — before the request ever reaches the model. This prevents the model from receiving bad data and crashing with a cryptic error.</div>
+      </div>
+    </div>
+
+    <button class="read-btn" onclick="markRead(this, 'api')">Mark as read ✓</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ 11. MONITORING ═══════════════════════════════════ -->
+<div id="monitoring" class="section-card deploy">
+  <div class="section-header" onclick="toggle(this)">
+    <h2>📡 Production Monitoring <span class="section-badge">Notebook 07</span></h2>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="section-body">
+    <p>Once the service is running, these are the first three things a senior ML engineer adds.</p>
+
+    <h3>1. Prediction distribution monitoring</h3>
+    <p>Log every <code>fraud_probability</code> value. Watch the daily mean. If it shifts — say, from 0.12 to 0.05 — something changed: fraud patterns, input features, or a bug.</p>
+
+    <h3>2. Data drift detection</h3>
+    <p>Compare incoming feature distributions to the training distribution. If <code>amount_mean_last_24h</code> starts looking different, the model is predicting on data it was not built for. Tools: <strong>Evidently AI</strong>, <strong>WhyLabs</strong>, or a simple Kolmogorov-Smirnov test.</p>
+
+    <h3>3. Label feedback loop</h3>
+    <p>In fraud detection, labels arrive <em>late</em> — a transaction confirmed fraudulent today was made three weeks ago. Build a pipeline to:</p>
+    <ol>
+      <li>Collect confirmed fraud labels from the chargebacks team</li>
+      <li>Join them back to your logged predictions</li>
+      <li>Compute actual precision and recall over the last 30 days</li>
+      <li>Alert if recall drops below a threshold (e.g. &lt; 85%)</li>
+    </ol>
+
+    <div class="summary-box">
+      <div class="box-title">⚠️ Without a label feedback loop you are flying blind</div>
+      <p>The model might be degrading for weeks before anyone notices. Fraud patterns shift constantly. Without comparing predictions to confirmed outcomes, you have no way to detect that recall has silently dropped.</p>
+    </div>
+
+    <h3>Deploying to Render — the model artefact problem</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Solution</th><th>How</th></tr>
+        <tr><td>Train on deploy ✓</td><td>Add <code>python src/train.py</code> to Render build command</td></tr>
+        <tr><td>Persistent disk</td><td>Store model in Render disk, mount at startup</td></tr>
+        <tr><td>Cloud storage</td><td>Upload to S3/GCS, download at startup</td></tr>
+      </table>
+    </div>
+    <p>Option 1 is easiest to start with: <code>pip install -r requirements.txt &amp;&amp; python src/train.py</code></p>
+
+    <div class="quiz-block">
+      <h3>Quick-check questions</h3>
+      <div class="flashcard" onclick="toggleCard(this)">
+        <div class="fc-question">What is data drift and why is it dangerous for a fraud model? <span class="fc-icon">+</span></div>
+        <div class="fc-answer">Data drift is when the statistical distribution of incoming features changes compared to what the model was trained on. Fraud patterns evolve constantly — new attack vectors, new merchant categories, seasonal patterns. A model trained six months ago may be silently making worse predictions today without anyone noticing.</div>
+      </div>
+      <div class="flashcard" onclick="toggleCard(this)">
+        <div class="fc-question">Why do fraud labels arrive late, and how does this affect monitoring? <span class="fc-icon">+</span></div>
+        <div class="fc-answer">A fraud chargeback can take weeks to be filed, investigated, and confirmed. So at the moment you make a prediction, you don't know if it was right. You can only evaluate accuracy retrospectively — which means your monitoring pipeline must join predictions to delayed labels, not evaluate in real time.</div>
+      </div>
+    </div>
+
+    <button class="read-btn" onclick="markRead(this, 'monitoring')">Mark as read ✓</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ QUICK REFERENCE ═══════════════════════════════════ -->
+<div class="section-card" style="background: var(--yellow-bg); border-color: var(--yellow-bd);">
+  <div class="section-header" onclick="toggle(this)">
+    <h2>📋 Quick Reference — Key Terms</h2>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="section-body">
+    <div class="table-wrap">
+      <table>
+        <tr><th>Term</th><th>One-line definition</th></tr>
+        <tr><td>Binary classifier</td><td>A model that predicts one of two outcomes</td></tr>
+        <tr><td>Class imbalance</td><td>When one class (fraud) is much rarer than the other</td></tr>
+        <tr><td>SMOTE</td><td>Creates synthetic minority class examples during training</td></tr>
+        <tr><td>Precision</td><td>Of predictions labelled fraud, % that really were fraud</td></tr>
+        <tr><td>Recall</td><td>Of all real fraud cases, % that the model caught</td></tr>
+        <tr><td>ROC-AUC</td><td>Model ranking quality, 0.5 = random, 1.0 = perfect</td></tr>
+        <tr><td>PR-AUC</td><td>Like ROC-AUC but focused on the minority class</td></tr>
+        <tr><td>False Positive (FP)</td><td>Legit transaction wrongly blocked — customer frustrated</td></tr>
+        <tr><td>False Negative (FN)</td><td>Fraud not caught — money lost</td></tr>
+        <tr><td>Threshold</td><td>Cutoff above which probability becomes "fraud = true"</td></tr>
+        <tr><td>SHAP</td><td>Per-feature contribution scores explaining a prediction</td></tr>
+        <tr><td>Velocity feature</td><td>Count or stat about a card's recent transaction history</td></tr>
+        <tr><td>StandardScaler</td><td>Normalises numeric features to mean=0, std=1</td></tr>
+        <tr><td>One-hot encoding</td><td>Turns categories into binary (0/1) columns</td></tr>
+        <tr><td>Data drift</td><td>Input feature distribution shifting away from training data</td></tr>
+        <tr><td>Feature store</td><td>Low-latency lookup for pre-computed velocity features</td></tr>
+        <tr><td>Pydantic</td><td>Python library for data validation using type hints</td></tr>
+        <tr><td>lifespan</td><td>FastAPI hook that runs code at server startup/shutdown</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+</div><!-- /page-wrap -->
+
+<script>
+  /* ── Section accordion ── */
+  function toggle(header) {
+    const card = header.parentElement;
+    card.classList.toggle('open');
+  }
+
+  /* ── Flashcard ── */
+  function toggleCard(card) {
+    card.classList.toggle('open');
+    const answer = card.querySelector('.fc-answer');
+    answer.classList.toggle('visible');
+  }
+
+  /* ── Progress tracking ── */
+  const READ_KEY = 'fraud_study_read';
+  let readSet = new Set(JSON.parse(localStorage.getItem(READ_KEY) || '[]'));
+  const TOTAL = 9;
+
+  function updateProgress() {
+    const n = readSet.size;
+    const pct = Math.round((n / TOTAL) * 100);
+    document.getElementById('progress-bar').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = n + ' of ' + TOTAL + ' sections marked as read';
+  }
+
+  function markRead(btn, id) {
+    readSet.add(id);
+    localStorage.setItem(READ_KEY, JSON.stringify([...readSet]));
+    btn.textContent = 'Read ✓';
+    btn.classList.add('done');
+    btn.disabled = true;
+    updateProgress();
+  }
+
+  /* ── Restore read state on load ── */
+  function restoreReadState() {
+    document.querySelectorAll('.read-btn').forEach(btn => {
+      const card = btn.closest('.section-card');
+      const id = card ? card.id : null;
+      if (id && readSet.has(id)) {
+        btn.textContent = 'Read ✓';
+        btn.classList.add('done');
+        btn.disabled = true;
+      }
+    });
+    updateProgress();
+  }
+
+  /* ── Open first section by default ── */
+  document.addEventListener('DOMContentLoaded', () => {
+    restoreReadState();
+    const firstCard = document.querySelector('.section-card');
+    if (firstCard) firstCard.classList.add('open');
+  });
+
+  /* ── Threshold slider ── */
+  // Lookup table derived from notebook 06 results
+  const threshData = {
+    0.05: { tp: 97, fp: 2100, fn: 1,  recall: 99.0, prec: 4.4  },
+    0.10: { tp: 95, fp: 820,  fn: 3,  recall: 96.9, prec: 10.4 },
+    0.15: { tp: 93, fp: 480,  fn: 5,  recall: 94.9, prec: 16.2 },
+    0.20: { tp: 92, fp: 310,  fn: 6,  recall: 93.9, prec: 22.9 },
+    0.25: { tp: 91, fp: 220,  fn: 7,  recall: 92.9, prec: 29.3 },
+    0.30: { tp: 91, fp: 180,  fn: 7,  recall: 92.9, prec: 33.6 },
+    0.35: { tp: 88, fp: 120,  fn: 10, recall: 89.8, prec: 42.3 },
+    0.40: { tp: 85, fp: 80,   fn: 13, recall: 86.7, prec: 51.5 },
+    0.50: { tp: 80, fp: 45,   fn: 18, recall: 81.6, prec: 64.0 },
+    0.60: { tp: 70, fp: 22,   fn: 28, recall: 71.4, prec: 76.1 },
+    0.70: { tp: 65, fp: 12,   fn: 33, recall: 66.3, prec: 84.4 },
+  };
+
+  function interp(v) {
+    const keys = Object.keys(threshData).map(Number).sort((a,b)=>a-b);
+    const lo = keys.reduce((prev, k) => k <= v ? k : prev, keys[0]);
+    const hi = keys.find(k => k >= v) || keys[keys.length-1];
+    if (lo === hi) return threshData[lo];
+    const t = (v - lo) / (hi - lo);
+    const a = threshData[lo], b = threshData[hi];
+    return {
+      tp: Math.round(a.tp + t*(b.tp-a.tp)),
+      fp: Math.round(a.fp + t*(b.fp-a.fp)),
+      fn: Math.round(a.fn + t*(b.fn-a.fn)),
+      recall: +(a.recall + t*(b.recall-a.recall)).toFixed(1),
+      prec: +(a.prec + t*(b.prec-a.prec)).toFixed(1),
+    };
+  }
+
+  function updateThreshold(val) {
+    val = parseFloat(val);
+    document.getElementById('thresh-val').textContent = val.toFixed(2);
+    const d = interp(val);
+    const cost = d.fp * 5 + d.fn * 150;
+    document.getElementById('s-tp').textContent     = d.tp;
+    document.getElementById('s-fp').textContent     = d.fp;
+    document.getElementById('s-fn').textContent     = d.fn;
+    document.getElementById('s-recall').textContent = d.recall + '%';
+    document.getElementById('s-prec').textContent   = d.prec + '%';
+    document.getElementById('s-cost').textContent   = cost.toLocaleString();
+  }
+</script>
+</body>
+</html>
