@@ -15,7 +15,10 @@
       "Bash(git -C /d/fraud-detection-ml commit -m \"fix paths in notebook 04\")",
       "Bash(python -)",
       "Bash(grep -o '\\\\\\\\\\\\\\\\u[0-9a-fA-F]\\\\{4\\\\}' notebooks/05_shap_explainability.ipynb)",
-      "Bash(python -c ' *)"
+      "Bash(python -c ' *)",
+      "Bash(python create_notebook6.py)",
+      "Bash(rm create_notebook6.py)",
+      "Bash(ls create_notebook6.py)"
     ]
   }
 }
