@@ -76,7 +76,8 @@
     .nav-eda    { background: var(--blue-bg);   border-color: var(--blue-bd);   color: #1A5F8A; }
     .nav-model  { background: var(--green-bg);  border-color: var(--green-bd);  color: #1A6B1A; }
     .nav-shap   { background: var(--orange-bg); border-color: var(--orange-bd); color: #8A4A00; }
-    .nav-deploy { background: var(--purple-bg); border-color: var(--purple-bd); color: #5A1A8A; }
+    .nav-deploy     { background: var(--purple-bg); border-color: var(--purple-bd); color: #5A1A8A; }
+    .nav-interview  { background: var(--nav-bg);    border-color: var(--nav-bd);    color: #3A3A3A; }
 
     #navbar a:hover { filter: brightness(0.92); }
 
@@ -477,6 +478,80 @@
     .shap   .read-btn.done { background: #E8A85A; border-color: #E8A85A; }
     .deploy .read-btn.done { background: #B87EE8; border-color: #B87EE8; }
 
+    /* ── Interview section ── */
+    .section-card.interview {
+      background: var(--nav-bg);
+      border-color: var(--nav-bd);
+    }
+
+    .interview .section-badge { background: var(--nav-bd); color: #3A3A3A; }
+
+    .interview .read-btn { border-color: var(--nav-bd); color: #3A3A3A; }
+    .interview .read-btn.done { background: #BDBDBD; border-color: #BDBDBD; color: #fff !important; }
+
+    .iq-block {
+      border: 2px solid var(--nav-bd);
+      border-radius: var(--radius);
+      background: #fff;
+      margin-bottom: 14px;
+      overflow: hidden;
+    }
+
+    .iq-q {
+      padding: 14px 18px;
+      font-weight: 700;
+      font-size: 0.95em;
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .iq-q:hover { background: rgba(0,0,0,0.03); }
+
+    .iq-num {
+      flex-shrink: 0;
+      background: var(--nav-bd);
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: #3A3A3A;
+      margin-top: 1px;
+    }
+
+    .iq-text { flex: 1; }
+
+    .iq-icon { flex-shrink: 0; font-size: 16px; transition: transform 0.2s; margin-top: 3px; }
+    .iq-block.open .iq-icon { transform: rotate(45deg); }
+
+    .iq-a {
+      display: none;
+      padding: 16px 18px 16px 58px;
+      border-top: 2px solid var(--nav-bd);
+      background: var(--yellow-bg);
+      font-size: 0.93em;
+      line-height: 1.8;
+    }
+
+    .iq-a.visible { display: block; }
+
+    .iq-a strong { color: #2C2C2C; }
+
+    .iq-a .a-label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 8px;
+    }
+
     /* ── Responsive ── */
     @media (max-width: 600px) {
       body { font-size: 16px; }
@@ -503,6 +578,7 @@
   <a href="#threshold"    class="nav-shap">Threshold</a>
   <a href="#api"          class="nav-deploy">API</a>
   <a href="#monitoring"   class="nav-deploy">Monitoring</a>
+  <a href="#interview"   class="nav-interview">Interview Prep</a>
 </nav>
 
 <!-- ═══════════════════════════════════ HERO ═══════════════════════════════════ -->
@@ -1138,6 +1214,155 @@ def health():
   </div>
 </div>
 
+
+<!-- ═══════════════════════════════════ INTERVIEW PREP ═══════════════════════════════════ -->
+<div id="interview" class="section-card interview">
+  <div class="section-header" onclick="toggle(this)">
+    <h2>🎤 Interview Prep — Q&amp;A <span class="section-badge">All notebooks</span></h2>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="section-body">
+    <p>Click any question to reveal a model answer. These cover the concepts most likely to come up when presenting or defending this project.</p>
+
+    <!-- Q1 -->
+    <div class="iq-block" onclick="toggleIQ(this)">
+      <div class="iq-q">
+        <div class="iq-num">1</div>
+        <div class="iq-text">Why can't you use accuracy to evaluate a fraud detection model?</div>
+        <div class="iq-icon">+</div>
+      </div>
+      <div class="iq-a">
+        <div class="a-label">Model answer</div>
+        Because the dataset is severely imbalanced — 99.83% of transactions are legitimate. A model that predicts "legit" for every single transaction scores 99.83% accuracy while catching <strong>zero fraud</strong>. Accuracy rewards predicting the majority class and completely hides failure on the minority class. Instead we use <strong>precision, recall, F1, ROC-AUC, and PR-AUC</strong> — metrics that are sensitive to minority class performance.
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="iq-block" onclick="toggleIQ(this)">
+      <div class="iq-q">
+        <div class="iq-num">2</div>
+        <div class="iq-text">What is SMOTE and why must it only be applied inside the training fold?</div>
+        <div class="iq-icon">+</div>
+      </div>
+      <div class="iq-a">
+        <div class="a-label">Model answer</div>
+        SMOTE (Synthetic Minority Oversampling TEchnique) creates new synthetic fraud examples by interpolating between existing ones, so the model has more minority class data to learn from. It must be applied <strong>inside the training pipeline, after the train/test split</strong>. If you apply it before splitting, synthetic examples generated from training data leak into the test set — your evaluation metrics look better than they really are because the test set is no longer truly unseen.
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="iq-block" onclick="toggleIQ(this)">
+      <div class="iq-q">
+        <div class="iq-num">3</div>
+        <div class="iq-text">Explain precision and recall in plain language. Which matters more for fraud?</div>
+        <div class="iq-icon">+</div>
+      </div>
+      <div class="iq-a">
+        <div class="a-label">Model answer</div>
+        <strong>Precision</strong> asks: of all the transactions I flagged as fraud, how many actually were? Low precision means too many false alarms — legitimate customers get blocked, get frustrated, and churn.<br><br>
+        <strong>Recall</strong> asks: of all the actual fraud cases, how many did I catch? Low recall means fraud slips through undetected — a direct financial loss.<br><br>
+        Neither is universally more important. It depends on the cost ratio. If missing one fraud case costs £150 and blocking one legitimate customer costs £5, you accept more false alarms to catch more fraud — you optimise recall. The threshold is how you control that tradeoff.
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="iq-block" onclick="toggleIQ(this)">
+      <div class="iq-q">
+        <div class="iq-num">4</div>
+        <div class="iq-text">Why is the default 0.5 classification threshold almost always wrong for this problem?</div>
+        <div class="iq-icon">+</div>
+      </div>
+      <div class="iq-a">
+        <div class="a-label">Model answer</div>
+        With only 0.17% fraud, the model learns that almost every transaction is legitimate, so the fraud probabilities it outputs cluster near zero. A 0.5 threshold flags almost nothing — you'd miss most fraud. The right threshold is determined by the business cost ratio: if a missed fraud costs 30× more than a false alarm, you lower the threshold to roughly 0.3 so the model catches more fraud at the cost of more false alarms. In this project we found the cost-optimal threshold is <strong>0.28</strong>.
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="iq-block" onclick="toggleIQ(this)">
+      <div class="iq-q">
+        <div class="iq-num">5</div>
+        <div class="iq-text">Walk me through how you choose an optimal threshold using business costs.</div>
+        <div class="iq-icon">+</div>
+      </div>
+      <div class="iq-a">
+        <div class="a-label">Model answer</div>
+        You define two costs: <strong>fn_cost</strong> (the average loss when fraud slips through — e.g. £150) and <strong>fp_cost</strong> (the cost of wrongly blocking a customer — e.g. £5). Then for each candidate threshold you compute: <code>total_cost = FP × fp_cost + FN × fn_cost</code> on the validation set. The threshold that minimises total cost is your operating point. This is purely a business decision, not a model decision — you can change it any time by editing the config file without retraining.
+      </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="iq-block" onclick="toggleIQ(this)">
+      <div class="iq-q">
+        <div class="iq-num">6</div>
+        <div class="iq-text">What are velocity features and why did they turn out to be the top fraud signals?</div>
+        <div class="iq-icon">+</div>
+      </div>
+      <div class="iq-a">
+        <div class="a-label">Model answer</div>
+        Velocity features summarise a card's recent transaction history — for example, how many transactions occurred in the last hour, or the card's average spend over the last 24 hours. They matter because a single transaction looks normal in isolation. A £500 electronics purchase at 2am is suspicious <em>only if</em> the card normally makes £30 supermarket purchases at noon. Velocity gives the model that context. SHAP analysis confirmed that <code>transactions_last_1h</code> and <code>amount_mean_last_24h</code> were the strongest fraud signals — more important than the raw transaction fields.
+      </div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="iq-block" onclick="toggleIQ(this)">
+      <div class="iq-q">
+        <div class="iq-num">7</div>
+        <div class="iq-text">What is SHAP and how would you use it in a production fraud system?</div>
+        <div class="iq-icon">+</div>
+      </div>
+      <div class="iq-a">
+        <div class="a-label">Model answer</div>
+        SHAP assigns each feature a contribution score for a specific prediction — positive values push toward fraud, negative toward legit. It comes from game theory (Shapley values) and is model-agnostic. In production it has two uses: <strong>globally</strong>, beeswarm and bar charts show which features matter most across thousands of predictions — useful for model debugging and feature selection. <strong>Locally</strong>, a waterfall chart for a single transaction shows exactly why it was flagged — essential when a customer calls to dispute a block, or when a compliance team needs an audit trail.
+      </div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="iq-block" onclick="toggleIQ(this)">
+      <div class="iq-q">
+        <div class="iq-num">8</div>
+        <div class="iq-text">Why do you load the model at API startup rather than inside the endpoint function?</div>
+        <div class="iq-icon">+</div>
+      </div>
+      <div class="iq-a">
+        <div class="a-label">Model answer</div>
+        Loading a scikit-learn model from disk takes around 200ms. At any meaningful request volume — say 100 requests per second — loading per-request adds 20 seconds of wasted I/O per second. The service would never keep up. Instead, we use FastAPI's <code>lifespan</code> context manager to load the model once when the server starts. Every request then reuses the same in-memory object at near-zero cost. The model is loaded exactly once; the threshold is read from config at the same time, so updating the threshold just means editing a YAML file and restarting the server — no retraining needed.
+      </div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="iq-block" onclick="toggleIQ(this)">
+      <div class="iq-q">
+        <div class="iq-num">9</div>
+        <div class="iq-text">What is data drift and how would you detect it in this system?</div>
+        <div class="iq-icon">+</div>
+      </div>
+      <div class="iq-a">
+        <div class="a-label">Model answer</div>
+        Data drift is when the statistical distribution of incoming features shifts away from what the model was trained on. Fraud patterns evolve constantly — new attack vectors, seasonality, changing merchant categories. A model trained six months ago may be silently worse today. To detect it I would: log every incoming request's feature values, compute daily feature distributions, and compare them to the training distribution using a statistical test like the Kolmogorov-Smirnov test or Population Stability Index. Tools like Evidently AI automate this. When drift is detected, it triggers a retraining job.
+      </div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="iq-block" onclick="toggleIQ(this)">
+      <div class="iq-q">
+        <div class="iq-num">10</div>
+        <div class="iq-text">What would you add to this system if you had another week?</div>
+        <div class="iq-icon">+</div>
+      </div>
+      <div class="iq-a">
+        <div class="a-label">Model answer</div>
+        Three things.<br><br>
+        <strong>First, a retraining pipeline triggered by drift detection.</strong> The model should update automatically as fraud patterns change. When the KS test flags drift on a key velocity feature, it kicks off a training run on the latest labelled data, validates the new model against the current champion, and promotes it if recall improves.<br><br>
+        <strong>Second, a graph neural network component.</strong> Fraudsters often operate in networks — the same device, IP, or card-not-present merchant appears across many victims. Individual transaction models miss ring fraud entirely. A GNN that models the transaction graph can detect those patterns. It would run alongside the current model, with the scores combined.<br><br>
+        <strong>Third, a feedback loop dashboard</strong> so the fraud operations team can label flagged transactions directly. Those confirmed labels feed back into the next training run. The current system is a good first version — but production fraud systems need that closed loop to stay effective as attackers adapt.
+      </div>
+    </div>
+
+    <button class="read-btn" onclick="markRead(this, 'interview')">Mark as read ✓</button>
+  </div>
+</div>
+
 </div><!-- /page-wrap -->
 
 <script>
@@ -1157,7 +1382,7 @@ def health():
   /* ── Progress tracking ── */
   const READ_KEY = 'fraud_study_read';
   let readSet = new Set(JSON.parse(localStorage.getItem(READ_KEY) || '[]'));
-  const TOTAL = 9;
+  const TOTAL = 10;
 
   function updateProgress() {
     const n = readSet.size;
@@ -1195,6 +1420,12 @@ def health():
     const firstCard = document.querySelector('.section-card');
     if (firstCard) firstCard.classList.add('open');
   });
+
+  /* ── Interview Q toggle ── */
+  function toggleIQ(block) {
+    block.classList.toggle('open');
+    block.querySelector('.iq-a').classList.toggle('visible');
+  }
 
   /* ── Threshold slider ── */
   // Lookup table derived from notebook 06 results
