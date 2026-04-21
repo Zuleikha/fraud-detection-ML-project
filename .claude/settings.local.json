@@ -18,7 +18,10 @@
       "Bash(python -c ' *)",
       "Bash(python create_notebook6.py)",
       "Bash(rm create_notebook6.py)",
-      "Bash(ls create_notebook6.py)"
+      "Bash(ls create_notebook6.py)",
+      "Bash(python create_notebook7.py)",
+      "Bash(rm create_notebook7.py)",
+      "Bash(ls create_notebook7.py)"
     ]
   }
 }
