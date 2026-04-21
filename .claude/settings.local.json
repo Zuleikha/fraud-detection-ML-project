@@ -12,7 +12,10 @@
       "Bash(git -C /d/fraud-detection-ml commit -m \"fix directory structure - outputs/ and mlflow_experiments/ in correct locations\")",
       "Bash(python3 *)",
       "Bash(git -C /d/fraud-detection-ml add notebooks/04_xgboost_tuning.ipynb)",
-      "Bash(git -C /d/fraud-detection-ml commit -m \"fix paths in notebook 04\")"
+      "Bash(git -C /d/fraud-detection-ml commit -m \"fix paths in notebook 04\")",
+      "Bash(python -)",
+      "Bash(grep -o '\\\\\\\\\\\\\\\\u[0-9a-fA-F]\\\\{4\\\\}' notebooks/05_shap_explainability.ipynb)",
+      "Bash(python -c ' *)"
     ]
   }
 }
