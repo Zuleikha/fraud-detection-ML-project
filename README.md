@@ -7,7 +7,11 @@
 [![MLflow](https://img.shields.io/badge/MLflow-tracked-0194E2?logo=mlflow&logoColor=white)](https://mlflow.org)
 [![Deployed on Render](https://img.shields.io/badge/Deployed%20on-Render-46E3B7?logo=render&logoColor=white)](https://fraud-detection-api-5gno.onrender.com)
 
-An end-to-end machine learning system that detects fraudulent credit card transactions. Starting from raw, highly imbalanced data (0.17% fraud rate), the project progresses through exploratory analysis, imbalance handling with SMOTE, hyperparameter tuning with Optuna, model explanation with SHAP, and cost-sensitive threshold optimisation — culminating in a tuned XGBoost classifier served via a FastAPI REST API deployed on Render.
+End-to-end machine learning pipeline for real-time payment fraud detection. Built on 284,807 real credit card transactions with extreme class imbalance (575:1). Full production system from exploratory analysis to deployed REST API.
+
+## Pipeline Overview
+
+`01 EDA` → `02 Baseline` → `03 Imbalance Handling` → `04 XGBoost + Optuna` → `05 SHAP` → `06 Threshold Tuning` → `07 API Deployment`
 
 ---
 
