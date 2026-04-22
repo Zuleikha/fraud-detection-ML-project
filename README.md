@@ -24,6 +24,16 @@ Threshold was further optimised from the default 0.5 down to **0.28** using a bu
 
 ---
 
+## Experiment Tracking
+
+All 150 Optuna hyperparameter trials were logged to MLflow, recording parameters, PR-AUC, and artefact paths for every run — making it straightforward to compare runs and reproduce the best model.
+
+![MLflow Experiments](docs/mlflow_screenshot.png)
+
+Live API: https://fraud-detection-api-5gno.onrender.com
+
+---
+
 ## Tech Stack
 
 | Layer | Libraries |
