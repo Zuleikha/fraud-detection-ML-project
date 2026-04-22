@@ -51,3 +51,6 @@ Thumbs.db
 .env
 *.env
 secrets.yaml
+
+# Claude Code local config
+.claude/
