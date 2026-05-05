@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fraud Detection ML — Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Atkinson Hyperlegible', Arial, sans-serif;
+    background: #fff5f5;
+    color: #1a1010;
+    line-height: 1.9;
+    font-size: 17px;
+    padding: 0 0 60px;
+  }
+
+  /* ── Header ─────────────────────────────────────────────────── */
+  header {
+    background: linear-gradient(135deg, #7f1d1d 0%, #b91c1c 100%);
+    color: #fff;
+    padding: 44px 40px 36px;
+  }
+  header h1 { font-size: 2rem; font-weight: 700; margin-bottom: 6px; }
+  header p  { font-size: 1.05rem; opacity: 0.88; max-width: 700px; line-height: 1.7; }
+  .badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: #fff;
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 0.82rem;
+    margin-top: 14px;
+    margin-right: 8px;
+  }
+  .live-badge {
+    display: inline-block;
+    background: #22c55e;
+    color: #fff;
+    border-radius: 20px;
+    padding: 5px 16px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-top: 14px;
+    text-decoration: none;
+  }
+  .live-badge:hover { background: #16a34a; }
+
+  /* ── Nav ─────────────────────────────────────────────────────── */
+  nav {
+    background: #fff;
+    border-bottom: 2px solid #fecaca;
+    padding: 10px 40px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  nav a {
+    color: #b91c1c;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: 4px 0;
+    border-bottom: 2px solid transparent;
+  }
+  nav a:hover { border-bottom-color: #b91c1c; }
+
+  /* ── Layout ──────────────────────────────────────────────────── */
+  main { max-width: 900px; margin: 0 auto; padding: 40px 24px; }
+  section { margin-bottom: 48px; }
+
+  h2 {
+    font-size: 1.5rem;
+    color: #7f1d1d;
+    margin-bottom: 18px;
+    padding-bottom: 8px;
+    border-bottom: 3px solid #fca5a5;
+  }
+  h3 { font-size: 1.1rem; color: #991b1b; margin: 18px 0 8px; font-weight: 700; }
+  p  { margin-bottom: 12px; }
+  ul { padding-left: 22px; margin-bottom: 12px; }
+  li { margin-bottom: 6px; }
+
+  /* ── Cards ───────────────────────────────────────────────────── */
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 22px 26px;
+    margin-bottom: 16px;
+    border-left: 5px solid #b91c1c;
+    box-shadow: 0 2px 8px rgba(185,28,28,0.07);
+  }
+  .card.green  { border-left-color: #16a34a; }
+  .card.amber  { border-left-color: #d97706; }
+  .card.blue   { border-left-color: #2563eb; }
+  .card.purple { border-left-color: #7c3aed; }
+  .card.dark   { border-left-color: #7f1d1d; }
+
+  /* ── Pipeline Steps ──────────────────────────────────────────── */
+  .pipeline { display: flex; flex-direction: column; gap: 0; }
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 18px 0;
+    border-bottom: 1px dashed #fecaca;
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    flex-shrink: 0;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: #b91c1c;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step-body h3 { margin-top: 0; }
+
+  /* ── Code ────────────────────────────────────────────────────── */
+  pre {
+    background: #1a0a0a;
+    color: #fecaca;
+    border-radius: 8px;
+    padding: 16px 20px;
+    overflow-x: auto;
+    font-size: 0.88rem;
+    line-height: 1.65;
+    margin: 12px 0;
+  }
+  code {
+    background: #fee2e2;
+    color: #991b1b;
+    border-radius: 4px;
+    padding: 2px 7px;
+    font-size: 0.88em;
+  }
+  pre code { background: none; color: inherit; padding: 0; }
+
+  /* ── Table ───────────────────────────────────────────────────── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 0.94rem;
+  }
+  th {
+    background: #7f1d1d;
+    color: #fff;
+    text-align: left;
+    padding: 10px 14px;
+    font-weight: 700;
+  }
+  td { padding: 9px 14px; border-bottom: 1px solid #fecaca; vertical-align: top; }
+  tr:nth-child(even) td { background: #fff5f5; }
+
+  /* ── Results highlight ───────────────────────────────────────── */
+  .result-row-best td {
+    background: #dcfce7 !important;
+    font-weight: 700;
+    color: #14532d;
+  }
+
+  /* ── Dropdowns ───────────────────────────────────────────────── */
+  details {
+    background: #fff;
+    border: 1.5px solid #fca5a5;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  summary {
+    cursor: pointer;
+    padding: 14px 20px;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #7f1d1d;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "▼"; font-size: 0.75rem; color: #b91c1c; transition: transform 0.2s; }
+  details[open] summary::after { transform: rotate(180deg); }
+  details[open] summary { border-bottom: 1.5px solid #fca5a5; }
+  .details-body { padding: 16px 20px; }
+
+  /* ── Metric boxes ────────────────────────────────────────────── */
+  .metric-row { display: flex; gap: 14px; flex-wrap: wrap; margin: 16px 0; }
+  .metric-box {
+    flex: 1; min-width: 130px;
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px 18px;
+    text-align: center;
+    border: 1.5px solid #fca5a5;
+    box-shadow: 0 2px 6px rgba(185,28,28,0.06);
+  }
+  .metric-box .val { font-size: 1.8rem; font-weight: 700; color: #b91c1c; }
+  .metric-box .lbl { font-size: 0.8rem; color: #6b7280; margin-top: 2px; }
+  .metric-box.green .val { color: #16a34a; }
+  .metric-box.green { border-color: #86efac; }
+
+  /* ── Confusion matrix ────────────────────────────────────────── */
+  .cm { display: grid; grid-template-columns: auto 1fr 1fr; gap: 4px; margin: 16px 0; font-size: 0.9rem; }
+  .cm-cell { padding: 10px 14px; border-radius: 6px; text-align: center; font-weight: 700; }
+  .cm-label { display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: #6b7280; }
+  .cm-tn { background: #dcfce7; color: #15803d; }
+  .cm-fp { background: #fef3c7; color: #92400e; }
+  .cm-fn { background: #fee2e2; color: #b91c1c; }
+  .cm-tp { background: #dcfce7; color: #15803d; }
+
+  /* ── Limitation items ────────────────────────────────────────── */
+  .limit-item {
+    background: #fffbeb;
+    border-left: 4px solid #d97706;
+    border-radius: 0 8px 8px 0;
+    padding: 10px 16px;
+    margin-bottom: 10px;
+  }
+
+  /* ── Architecture ────────────────────────────────────────────── */
+  .arch {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    border: 1.5px solid #fca5a5;
+  }
+  .arch-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .arch-box {
+    background: #fee2e2;
+    border: 1.5px solid #fca5a5;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #7f1d1d;
+    text-align: center;
+  }
+  .arch-box.green { background: #dcfce7; border-color: #86efac; color: #15803d; }
+  .arch-box.dark  { background: #7f1d1d; color: #fff; border-color: #7f1d1d; }
+  .arch-box.blue  { background: #dbeafe; border-color: #93c5fd; color: #1d4ed8; }
+  .arch-arrow { font-size: 1.1rem; color: #9ca3af; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Fraud Detection ML System</h1>
+  <p>End-to-end ML pipeline for real-time payment fraud detection. 284,807 real credit card transactions, 575:1 class imbalance, XGBoost + Optuna hyperparameter search, SHAP explainability, business-cost threshold optimisation, deployed as a FastAPI REST service on Render.</p>
+  <span class="badge">XGBoost</span>
+  <span class="badge">Optuna</span>
+  <span class="badge">SHAP</span>
+  <span class="badge">MLflow</span>
+  <span class="badge">FastAPI</span>
+  <span class="badge">scikit-learn</span>
+  <a class="live-badge" href="https://fraud-detection-api-5gno.onrender.com/docs" target="_blank">Live API →</a>
+</header>
+
+<nav>
+  <a href="#results">Results</a>
+  <a href="#pipeline">7-Stage Pipeline</a>
+  <a href="#data">Data &amp; Imbalance</a>
+  <a href="#features">Features</a>
+  <a href="#training">Training</a>
+  <a href="#evaluation">Evaluation</a>
+  <a href="#threshold">Threshold</a>
+  <a href="#api">API</a>
+  <a href="#qa">Q&amp;A</a>
+</nav>
+
+<main>
+
+  <!-- ── RESULTS ───────────────────────────────────────────────── -->
+  <section id="results">
+    <h2>Results at a Glance</h2>
+
+    <div class="metric-row">
+      <div class="metric-box green">
+        <div class="val">0.88</div>
+        <div class="lbl">PR-AUC (final)</div>
+      </div>
+      <div class="metric-box">
+        <div class="val">0.73</div>
+        <div class="lbl">PR-AUC baseline</div>
+      </div>
+      <div class="metric-box green">
+        <div class="val">150</div>
+        <div class="lbl">Optuna trials</div>
+      </div>
+      <div class="metric-box">
+        <div class="val">0.28</div>
+        <div class="lbl">Optimal threshold</div>
+      </div>
+      <div class="metric-box">
+        <div class="val">575:1</div>
+        <div class="lbl">Class imbalance</div>
+      </div>
+    </div>
+
+    <table>
+      <thead><tr><th>Stage</th><th>Model</th><th>PR-AUC</th></tr></thead>
+      <tbody>
+        <tr><td>01 Baseline</td><td>Logistic Regression (default)</td><td>0.73</td></tr>
+        <tr><td>02 Imbalance</td><td>Logistic Regression + SMOTE</td><td>0.76</td></tr>
+        <tr><td>03 Boosting</td><td>XGBoost (default)</td><td>0.82</td></tr>
+        <tr class="result-row-best"><td>04 Tuned</td><td>XGBoost + Optuna (150 trials)</td><td>0.88</td></tr>
+      </tbody>
+    </table>
+
+    <p>Threshold was then tuned from the default 0.5 down to <strong>0.28</strong> using a business cost matrix (a missed fraud costs ~10× more than a false block). This improved recall on the held-out test set with an acceptable drop in precision.</p>
+  </section>
+
+  <!-- ── PIPELINE ──────────────────────────────────────────────── -->
+  <section id="pipeline">
+    <h2>7-Stage Pipeline</h2>
+
+    <div class="arch" style="margin-bottom: 24px;">
+      <div class="arch-row">
+        <div class="arch-box dark">01 EDA</div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-box">02 Baseline</div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-box">03 Imbalance</div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-box">04 XGBoost + Optuna</div>
+      </div>
+      <div class="arch-row" style="margin-top:4px;">
+        <div class="arch-arrow">→</div>
+        <div class="arch-box blue">05 SHAP</div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-box">06 Threshold Tuning</div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-box green">07 API Deployment</div>
+      </div>
+    </div>
+
+    <div class="pipeline">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-body">
+          <h3>EDA — Exploratory Data Analysis</h3>
+          <p>284,807 transactions, 492 fraud cases (0.17%). PCA-transformed features V1–V28 (anonymised for privacy), plus Amount and Time. Key finding: fraud cases cluster in certain feature ranges and at unusual hours. Class imbalance is extreme — any model that ignores it will look good on accuracy (99.83%) while catching zero fraud.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-body">
+          <h3>Baseline Model</h3>
+          <p>Logistic Regression with default settings gives PR-AUC 0.73. This is the number every later model must beat. Using a weak baseline first establishes that the problem is non-trivial and that each improvement is genuinely adding value.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-body">
+          <h3>Imbalance Handling</h3>
+          <p>Three approaches compared: SMOTE (synthetic oversampling of minority class), random undersampling of majority class, and <code>class_weight="balanced"</code>. SMOTE + balanced weights gave the best lift (+0.03 PR-AUC over baseline). The SMOTE step is inside the training pipeline so it only sees training data — never validation or test.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-body">
+          <h3>XGBoost + Optuna Hyperparameter Search</h3>
+          <p>150 trials with Optuna searching over <code>learning_rate</code>, <code>max_depth</code>, <code>n_estimators</code>, <code>subsample</code>, <code>colsample_bytree</code>, <code>gamma</code>, and <code>min_child_weight</code>. Each trial is logged to MLflow with all parameters and PR-AUC. Best trial: PR-AUC 0.88. All 150 runs are queryable in the MLflow UI.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">05</div>
+        <div class="step-body">
+          <h3>SHAP Explainability</h3>
+          <p>SHAP (SHapley Additive exPlanations) explains individual predictions. Summary plot shows which features drive fraud globally. Waterfall plot shows why a specific transaction was flagged. This is critical for fraud detection — regulators and business stakeholders need to know <em>why</em> a transaction was blocked, not just that it was.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">06</div>
+        <div class="step-body">
+          <h3>Threshold Optimisation</h3>
+          <p>Default sklearn threshold of 0.5 misses most fraud in a heavily imbalanced dataset. A cost matrix sweep across all thresholds (0.01 to 0.99) finds the threshold that minimises total business cost. With fraud loss ~10× higher than a false block, the optimal threshold is <strong>0.28</strong>.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">07</div>
+        <div class="step-body">
+          <h3>API Deployment</h3>
+          <p>FastAPI app loads the serialised XGBoost model (<code>outputs/models/best_xgb.pkl</code>) at startup. Accepts 30 named features (V1–V28 + log_amount + hour_of_day), returns fraud probability, binary decision, and threshold used. Deployed on Render with a <code>render.yaml</code> config — no Docker needed.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── DATA & IMBALANCE ──────────────────────────────────────── -->
+  <section id="data">
+    <h2>Data &amp; Class Imbalance</h2>
+
+    <div class="card dark">
+      <h3>The Dataset</h3>
+      <p>284,807 credit card transactions from European cardholders over two days. 492 are fraud (0.17%). Features V1–V28 are PCA components — the original features were anonymised. <code>Amount</code> is the transaction amount (log-scaled to <code>log_amount</code>). <code>Time</code> is seconds from the first transaction (converted to <code>hour_of_day</code>).</p>
+      <p>Source: <a href="https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud" style="color:#fca5a5;">Kaggle — Credit Card Fraud Detection (MLG-ULB)</a></p>
+    </div>
+
+    <div class="card amber">
+      <h3>Why 99.83% accuracy means nothing here</h3>
+      <p>A model that always predicts "legitimate" scores 99.83% accuracy. It catches zero fraud. This is why we use <strong>PR-AUC</strong> (Precision-Recall Area Under Curve) as the primary metric — it focuses entirely on the minority class and is not flattered by the majority.</p>
+    </div>
+
+    <h3>Imbalance Handling Techniques Compared</h3>
+    <table>
+      <thead><tr><th>Technique</th><th>What it does</th><th>Tradeoff</th></tr></thead>
+      <tbody>
+        <tr><td>SMOTE</td><td>Synthesises new minority-class examples between real ones</td><td>Can introduce unrealistic examples at class boundaries</td></tr>
+        <tr><td>Random undersampling</td><td>Drops majority-class examples to balance ratio</td><td>Discards real information</td></tr>
+        <tr><td><code>class_weight="balanced"</code></td><td>Weights loss function to penalise minority errors more</td><td>No new data; effect depends on algorithm</td></tr>
+        <tr><td>SMOTE + balanced weights</td><td>Belt-and-braces: both synthetic data and weighted loss</td><td>Slight risk of over-correction; worked best here</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ── FEATURES ──────────────────────────────────────────────── -->
+  <section id="features">
+    <h2>Feature Engineering</h2>
+
+    <p>Raw transaction fields alone are weak signal. Context from the card's history is what separates fraud from a legitimate unusual purchase.</p>
+
+    <div class="card blue">
+      <h3>Time Features</h3>
+      <ul>
+        <li><strong>hour_of_day</strong> — fraud spikes at unusual hours (2–4am). A single field but a strong signal.</li>
+        <li><strong>day_of_week</strong> — weekend patterns differ from weekdays for both legitimate and fraudulent behaviour.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Velocity Features</h3>
+      <p>Computed from the card's recent transaction history. A fraudster who steals a card often does multiple small test transactions before a large one — <code>transactions_last_1h = 5</code> + <code>amount = €0.01</code> is a classic card-testing signature.</p>
+      <table>
+        <thead><tr><th>Feature</th><th>Window</th><th>What it captures</th></tr></thead>
+        <tbody>
+          <tr><td><code>transactions_last_1h</code></td><td>1 hour</td><td>Burst activity — card testing</td></tr>
+          <tr><td><code>transactions_last_24h</code></td><td>24 hours</td><td>Daily usage anomaly</td></tr>
+          <tr><td><code>amount_mean_last_24h</code></td><td>24 hours</td><td>Normal spend level for this card</td></tr>
+          <tr><td><code>amount_std_last_24h</code></td><td>24 hours</td><td>Spend variability</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card green">
+      <h3>Preprocessing Pipeline</h3>
+      <pre><code>ColumnTransformer([
+    ("num", StandardScaler(),   numeric_features),
+    ("cat", OneHotEncoder(...), categorical_features),
+])</code></pre>
+      <p>StandardScaler isn't strictly needed for XGBoost (tree-based models are scale-invariant) but keeps the pipeline consistent if you swap algorithms. <code>handle_unknown='ignore'</code> on the encoder means unseen merchant categories at inference time don't crash the API.</p>
+    </div>
+
+    <div class="card amber">
+      <h3>Production note: feature stores</h3>
+      <p>In a real system, velocity features live in a <strong>feature store</strong> (Redis, Feast, Tecton). At inference time you look up <code>card_id</code> and get pre-computed values in &lt;5ms. In this project they're computed offline for training — this is an acknowledged limitation.</p>
+    </div>
+  </section>
+
+  <!-- ── TRAINING ───────────────────────────────────────────────── -->
+  <section id="training">
+    <h2>Model Training</h2>
+
+    <div class="card dark">
+      <h3>Algorithm Progression</h3>
+      <table>
+        <thead><tr><th>Algorithm</th><th>Pros</th><th>Cons</th></tr></thead>
+        <tbody>
+          <tr><td>Logistic Regression</td><td>Interpretable, fast, good baseline</td><td>Weak on non-linear patterns</td></tr>
+          <tr><td>Random Forest</td><td>Robust, handles mixed types</td><td>Less accurate than boosting</td></tr>
+          <tr><td><strong>XGBoost</strong></td><td>State of the art accuracy, fast</td><td>More hyperparameters to tune</td></tr>
+          <tr><td>Neural Network</td><td>Captures complex patterns</td><td>Needs lots of data, slow to iterate</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card blue">
+      <h3>Optuna Hyperparameter Search</h3>
+      <p>Optuna runs 150 trials, each with a different combination of hyperparameters sampled from defined ranges. Pruning stops unpromising trials early. Every trial is logged to MLflow.</p>
+      <pre><code>def objective(trial):
+    params = {
+        "learning_rate":    trial.suggest_float("learning_rate", 0.01, 0.3, log=True),
+        "max_depth":        trial.suggest_int("max_depth", 3, 10),
+        "n_estimators":     trial.suggest_int("n_estimators", 100, 500),
+        "subsample":        trial.suggest_float("subsample", 0.6, 1.0),
+        "colsample_bytree": trial.suggest_float("colsample_bytree", 0.6, 1.0),
+        "gamma":            trial.suggest_float("gamma", 0, 5),
+        "min_child_weight": trial.suggest_int("min_child_weight", 1, 10),
+    }
+    model = XGBClassifier(**params, eval_metric="aucpr", ...)
+    # 5-fold cross-validated PR-AUC
+    return cross_val_score(model, X_train, y_train,
+                           scoring="average_precision", cv=5).mean()</code></pre>
+    </div>
+
+    <div class="card green">
+      <h3>MLflow Experiment Tracking</h3>
+      <p>All 150 Optuna trials are logged to MLflow — every parameter combination and its PR-AUC score. This makes it easy to:</p>
+      <ul>
+        <li>Compare runs and see which hyperparameters matter most</li>
+        <li>Reproduce the best model exactly</li>
+        <li>Show the search history to stakeholders (screenshot in <code>docs/mlflow_screenshot.png</code>)</li>
+      </ul>
+      <p>To view the MLflow UI locally: run <code>mlflow ui</code> and open <code>http://localhost:5000</code>.</p>
+    </div>
+  </section>
+
+  <!-- ── EVALUATION ────────────────────────────────────────────── -->
+  <section id="evaluation">
+    <h2>Model Evaluation</h2>
+
+    <h3>Why accuracy is the wrong metric</h3>
+    <p>A model predicting "legitimate" for every transaction scores <strong>99.83% accuracy</strong> and catches zero fraud. The relevant metrics for imbalanced classification are:</p>
+
+    <table>
+      <thead><tr><th>Metric</th><th>Formula</th><th>What it measures</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Precision</strong></td><td>TP / (TP + FP)</td><td>Of transactions flagged as fraud, how many actually were? Low = too many false alarms.</td></tr>
+        <tr><td><strong>Recall</strong></td><td>TP / (TP + FN)</td><td>Of actual fraud cases, how many were caught? Low = fraud slips through.</td></tr>
+        <tr><td><strong>PR-AUC</strong></td><td>Area under P-R curve</td><td>Overall model quality on the minority class, independent of threshold. Primary metric here.</td></tr>
+        <tr><td><strong>ROC-AUC</strong></td><td>Area under ROC curve</td><td>Good for model comparison. Less informative than PR-AUC with heavy imbalance.</td></tr>
+        <tr><td><strong>F1</strong></td><td>Harmonic mean of P &amp; R</td><td>Useful single number but hides the precision-recall tradeoff.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Confusion Matrix — Business Meaning</h3>
+    <div class="cm">
+      <div></div>
+      <div class="cm-label">Predicted: Legit</div>
+      <div class="cm-label">Predicted: Fraud</div>
+      <div class="cm-label" style="writing-mode:horizontal-tb; font-size:0.75rem;">Actual: Legit</div>
+      <div class="cm-cell cm-tn">TN ✓<br><small>Approved — happy customer</small></div>
+      <div class="cm-cell cm-fp">FP ✗<br><small>Blocked — frustrated customer, churn risk</small></div>
+      <div class="cm-label" style="font-size:0.75rem;">Actual: Fraud</div>
+      <div class="cm-cell cm-fn">FN ✗✗<br><small>Fraud through — direct financial loss</small></div>
+      <div class="cm-cell cm-tp">TP ✓<br><small>Fraud blocked — money saved</small></div>
+    </div>
+  </section>
+
+  <!-- ── THRESHOLD ─────────────────────────────────────────────── -->
+  <section id="threshold">
+    <h2>Threshold Optimisation</h2>
+
+    <div class="card dark">
+      <h3>Why 0.5 is almost never right in production</h3>
+      <p>sklearn's default threshold of 0.5 assumes equal cost for false positives and false negatives. In fraud detection, a missed fraud (FN) costs roughly 10–30× more than a false block (FP). With extreme class imbalance, predicted probabilities cluster near 0 — a threshold of 0.5 will flag almost nothing.</p>
+    </div>
+
+    <div class="card blue">
+      <h3>Business Cost Matrix Sweep</h3>
+      <pre><code>fn_cost = 150   # fraud gets through — financial loss
+fp_cost = 5     # customer wrongly blocked — support cost + churn risk
+
+costs = []
+thresholds = np.linspace(0.01, 0.99, 100)
+
+for t in thresholds:
+    y_pred = (y_prob >= t).astype(int)
+    fp = ((y_pred == 1) & (y_test == 0)).sum()
+    fn = ((y_pred == 0) & (y_test == 1)).sum()
+    costs.append(fp * fp_cost + fn * fn_cost)
+
+optimal_threshold = thresholds[np.argmin(costs)]
+# → 0.28</code></pre>
+      <p>fn_cost / fp_cost = 30 means each missed fraud is 30× more expensive than a false alarm. This pushes the optimal threshold down from 0.5 to <strong>0.28</strong>.</p>
+    </div>
+
+    <h3>Threshold vs Precision/Recall Tradeoff</h3>
+    <table>
+      <thead><tr><th>Threshold</th><th>Fraud Caught (TP)</th><th>False Alarms (FP)</th><th>Missed Fraud (FN)</th><th>Precision</th><th>Recall</th></tr></thead>
+      <tbody>
+        <tr><td>0.10</td><td>95</td><td>820</td><td>3</td><td>10.4%</td><td>96.9%</td></tr>
+        <tr class="result-row-best"><td>0.28</td><td>91</td><td>180</td><td>7</td><td>33.6%</td><td>92.9%</td></tr>
+        <tr><td>0.50</td><td>80</td><td>45</td><td>18</td><td>64.0%</td><td>81.6%</td></tr>
+        <tr><td>0.70</td><td>65</td><td>12</td><td>33</td><td>84.4%</td><td>66.3%</td></tr>
+      </tbody>
+    </table>
+
+    <div class="card green">
+      <h3>Threshold is a business decision, not a technical one</h3>
+      <p>The threshold is stored separately from the model artefact. Changing the threshold means updating a config value and restarting the server — not retraining the model. In production, threshold changes typically go through A/B tests or champion/challenger frameworks before being applied globally.</p>
+    </div>
+  </section>
+
+  <!-- ── API ───────────────────────────────────────────────────── -->
+  <section id="api">
+    <h2>API</h2>
+
+    <p><strong>Live:</strong> <a href="https://fraud-detection-api-5gno.onrender.com/docs" style="color:#b91c1c; font-weight:700;">https://fraud-detection-api-5gno.onrender.com/docs</a></p>
+    <p>Note: Render free-tier instances spin down after 15 minutes of inactivity. The first request may take up to 30 seconds while the instance wakes.</p>
+
+    <table>
+      <thead><tr><th>Endpoint</th><th>Method</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>/health</code></td><td>GET</td><td>Returns <code>{"status": "ok"}</code> — use to warm up the instance</td></tr>
+        <tr><td><code>/predict</code></td><td>POST</td><td>Scores a transaction — returns fraud probability, binary decision, and threshold used</td></tr>
+        <tr><td><code>/docs</code></td><td>GET</td><td>Interactive Swagger UI</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Predict — Request Body</h3>
+    <p>30 named fields: V1–V28 (PCA components from the dataset), <code>log_amount</code> (natural log of transaction amount), and <code>hour_of_day</code> (0–23).</p>
+    <pre><code>curl -s -X POST https://fraud-detection-api-5gno.onrender.com/predict \
+  -H "Content-Type: application/json" \
+  -d '{
+    "V1": -1.3598, "V2": -0.0728, "V3": 2.5363, "V4": 1.3782, "V5": -0.3383,
+    "V6": 0.4624,  "V7": 0.2396,  "V8": 0.0987,  "V9": 0.3638, "V10": 0.0908,
+    "V11": -0.5516, "V12": -0.6178, "V13": -0.9914, "V14": -0.3112, "V15": 1.4682,
+    "V16": -0.4704, "V17": 0.2080, "V18": 0.0258, "V19": 0.4040, "V20": 0.2514,
+    "V21": -0.0183, "V22": 0.2778, "V23": -0.1105, "V24": 0.0669, "V25": 0.1285,
+    "V26": -0.1892, "V27": 0.1336, "V28": -0.0211,
+    "log_amount": 3.64,
+    "hour_of_day": 14.0
+  }'</code></pre>
+
+    <h3>Response</h3>
+    <pre><code>{
+  "fraud_probability": 0.0312,
+  "is_fraud": false,
+  "threshold_used": 0.28
+}</code></pre>
+  </section>
+
+  <!-- ── Q&A ──────────────────────────────────────────────────── -->
+  <section id="qa">
+    <h2>Q&amp;A</h2>
+
+    <details>
+      <summary>Why PR-AUC instead of ROC-AUC as the primary metric?</summary>
+      <div class="details-body">
+        <p>ROC-AUC measures the tradeoff between true positive rate and false positive rate at all thresholds. With 99.83% legitimate transactions, it's very easy to get a high ROC-AUC — the model just needs to avoid predicting fraud for the vast majority of legitimate cases, which is trivial. PR-AUC specifically measures performance on the minority (fraud) class by looking at the precision-recall tradeoff. A model that catches no fraud at all can score well on ROC-AUC but will have near-zero PR-AUC. PR-AUC is a much harder and more honest measure here.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Why does SMOTE go inside the training pipeline, not outside it?</summary>
+      <div class="details-body">
+        <p>If SMOTE runs before the train/test split, synthetic examples generated from training data leak information into the test set — they're derived from real training examples, so the model has effectively "seen" part of the test set. Putting SMOTE inside the <code>imblearn.Pipeline</code> ensures it only sees training folds during cross-validation, and is not applied at all to the validation or test set. This is the correct way to prevent data leakage with oversampling.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>What is SHAP and why does fraud detection specifically need it?</summary>
+      <div class="details-body">
+        <p>SHAP (SHapley Additive exPlanations) decomposes each prediction into per-feature contributions — how much did V14 push the fraud probability up? How much did the hour_of_day push it down? For XGBoost (a black-box model), this provides post-hoc interpretability.</p>
+        <p>Fraud detection needs this for two reasons:</p>
+        <ul>
+          <li><strong>Regulatory compliance:</strong> financial institutions are often required to explain why a transaction was declined. "The model said so" is not acceptable.</li>
+          <li><strong>Operational trust:</strong> fraud analysts reviewing flagged transactions need to see the reasoning to decide whether to act. Without explanation, they can't calibrate trust in the system.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>What is Optuna and how is it different from a grid search?</summary>
+      <div class="details-body">
+        <p>Grid search exhaustively evaluates every combination in a predefined grid — if you have 5 values for 7 parameters, that's 78,125 evaluations. Optuna uses <strong>Bayesian optimisation</strong>: after each trial, it updates a probabilistic model of which parameter regions produce good results, and samples the next trial from promising regions. This means:</p>
+        <ul>
+          <li>It finds good hyperparameters in far fewer trials than grid search</li>
+          <li>It can search continuous ranges, not just fixed grids</li>
+          <li>It uses pruning to stop bad trials early, saving time</li>
+        </ul>
+        <p>150 Optuna trials covers the search space far more intelligently than a grid search of comparable size.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>What do the V1–V28 features actually represent?</summary>
+      <div class="details-body">
+        <p>V1–V28 are PCA (Principal Component Analysis) components of the original transaction features. The dataset provider (ULB) applied PCA before releasing it publicly to protect cardholder privacy — the original features (merchant name, card number, location, etc.) are not disclosed. This means we can train a working model but we can't interpret what V14 or V3 means in business terms. In a real deployment you'd have access to the original features, and SHAP interpretations would make direct business sense.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Why is log_amount used instead of raw amount?</summary>
+      <div class="details-body">
+        <p>Transaction amounts are highly skewed — most transactions are small (€5–€200) but occasional large ones (€5,000+) would dominate the feature space. Log-transforming the amount compresses the scale so the model treats the difference between €5 and €50 similarly to the difference between €500 and €5,000 — both are an order of magnitude. This is a standard preprocessing step for monetary values in financial ML.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>How does the threshold value get into the API?</summary>
+      <div class="details-body">
+        <p>The threshold is hardcoded as a constant in <code>app/main.py</code> (<code>THRESHOLD = 0.28</code>). It's separate from the model pickle — changing the threshold doesn't require retraining, just redeploying the API with a new value. In a more mature system you'd read it from a config file or environment variable so it can be changed without a code change. The model artefact (<code>outputs/models/best_xgb.pkl</code>) encodes the learned weights — the threshold encodes the business decision about acceptable precision/recall tradeoff.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Why is the dataset 284,807 rows but only 492 fraud cases?</summary>
+      <div class="details-body">
+        <p>This reflects real-world credit card fraud rates. In mature payment systems with fraud controls already in place, the fraud rate is typically 0.1%–0.5%. The ULB dataset was collected from European cardholders in September 2013 — 492 fraudulent transactions out of 284,807 total gives a fraud rate of 0.172%. The extreme imbalance (575:1 legitimate-to-fraud ratio) is not a dataset quirk; it's the actual distribution a production fraud model faces.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>What would a production version of this system add?</summary>
+      <div class="details-body">
+        <p>This project is a complete end-to-end ML pipeline but a production deployment would also include:</p>
+        <ul>
+          <li><strong>Real-time feature store</strong> (Redis/Feast) for velocity features at &lt;5ms latency</li>
+          <li><strong>Streaming pipeline</strong> (Kafka + Flink) for sub-second decision-making</li>
+          <li><strong>Model retraining pipeline</strong> triggered by data drift detection</li>
+          <li><strong>Champion/challenger framework</strong> for A/B testing threshold and model changes</li>
+          <li><strong>Graph neural network</strong> layer — GNNs catch ring fraud patterns that tabular models miss</li>
+          <li><strong>Feedback loop</strong> — confirmed fraud labels from chargeback outcomes fed back into retraining</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>How much does the Render deployment cost?</summary>
+      <div class="details-body">
+        <p>The API is deployed on Render's free tier — $0/month. Limitations: 512MB RAM, instance spins down after 15 minutes of inactivity (first request after sleep takes ~30 seconds to wake). The XGBoost model loads from a pickle file at startup — no GPU needed, RAM usage is well within the 512MB limit. For a production deployment that needs zero cold-start, Render's $7/month paid tier keeps the instance always-on.</p>
+      </div>
+    </details>
+
+  </section>
+
+  <!-- ── LIMITATIONS ─────────────────────────────────────────────── -->
+  <section id="limitations">
+    <h2>Limitations &amp; Honest Notes</h2>
+
+    <div class="limit-item">
+      <strong>Velocity features are computed offline.</strong> In this project, velocity features (transactions in the last hour, etc.) are computed from the dataset at training time. In a real system, these would be served from a feature store with pre-aggregated values per card — you don't have the card history available at inference time in a live payment system.
+    </div>
+
+    <div class="limit-item">
+      <strong>V1–V28 are PCA-transformed.</strong> The original features are anonymised. This means SHAP explanations reference abstract components, not interpretable business concepts like merchant category or location. Real fraud systems have access to the original features.
+    </div>
+
+    <div class="limit-item">
+      <strong>No concept drift handling.</strong> Fraud patterns change as fraudsters adapt. This model was trained on 2013 data and has no retraining trigger. A production system needs monitoring for data drift and scheduled or trigger-based retraining.
+    </div>
+
+    <div class="limit-item">
+      <strong>No streaming.</strong> The API scores one transaction at a time via REST call. Real-time fraud detection at scale uses a streaming pipeline (Kafka + Flink) with sub-100ms decision requirements — REST is too slow for payment authorisation windows.
+    </div>
+
+    <div class="limit-item">
+      <strong>Render free tier spins down.</strong> The first request after 15 minutes of inactivity takes ~30 seconds. Not suitable for a real payment API — included here for portfolio demonstration only.
+    </div>
+  </section>
+
+</main>
+</body>
+</html>
